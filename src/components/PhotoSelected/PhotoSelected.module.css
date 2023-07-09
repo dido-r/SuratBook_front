@@ -1,0 +1,50 @@
+﻿.modal-background {
+    position: fixed;
+    z-index: 1;
+    padding-top: 20px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #1d1e1e;
+    margin-left: 5%;
+    margin-top: 2%;
+    padding: 10px;
+    border: 1px solid #888;
+    max-width: 90%;
+    max-height: 90%;
+    text-align: center;
+}
+
+.modal-img {
+    max-height: 600px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.modal-likes {
+    position: absolute;
+    bottom: 13%;
+    right: 6%;
+}
+
+.close-modal {
+    color: #605f5f;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+    .close-modal:hover,
+    .close-modal:focus {
+        color: #dedede;
+        text-decoration: none;
+        cursor: pointer;
+    }

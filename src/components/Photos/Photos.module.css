@@ -1,0 +1,20 @@
+﻿.images-container {
+    display: flex;
+    flex-wrap:wrap;
+    margin-left: 10%;
+}
+
+.user-list-img {
+    width: 250px;
+    height: auto;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.add-photo {
+    text-align: center;
+}
+
+.add-photo-btn {
+   width: 20%;
+}

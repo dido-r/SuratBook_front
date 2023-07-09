@@ -1,0 +1,42 @@
+﻿.create-input:focus,
+.create-ta:focus {
+    outline: none;
+    border-color: #465d8b;
+    box-shadow: inset 0 1px 1px #465d8b, 0 0 2px 1px #465d8b;
+}
+
+.create-input,
+.create-ta {
+    width: 80%;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 4px;
+    background: #efeeee
+}
+
+.create-h {
+    color: #9d9d9d;
+    margin: 5px;
+}
+
+button {
+    margin: 5px
+}
+
+.create-card {
+    position: fixed;
+    text-align:center;
+    height: 60%;
+    width:60%;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.create-card h4,
+.create-card input,
+.create-card textarea,
+.create-card button {
+    margin: 20px;
+    padding: 10px;
+}

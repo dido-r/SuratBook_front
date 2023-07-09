@@ -1,0 +1,25 @@
+﻿.create-input:focus {
+    outline: none;
+    border-color: #465d8b;
+    box-shadow: inset 0 1px 1px #465d8b, 0 0 2px 1px #465d8b;
+}
+
+.create-input {
+    width: 95%;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 4px;
+    background: #efeeee;
+}
+
+.comment-form {
+    text-align:center;
+}
+
+.comment-hr {
+    margin: 10px;
+}
+
+.create-comment {
+    margin-bottom: 20px;
+}

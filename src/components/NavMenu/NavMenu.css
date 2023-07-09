@@ -1,0 +1,75 @@
+﻿a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+    letter-spacing: 1px;
+    font-weight: 700;
+    font-size: 23px;
+}
+
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+.dropmenu {
+    position: absolute;
+    z-index: 1000;
+    min-width: 7rem;
+    padding: 0.5rem 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: center;
+    list-style: none;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 0.25rem;
+}
+
+.navbar {
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    border-bottom: 1px solid #3b3b3b;
+}
+
+.navbar-brand {
+    background: linear-gradient(to right, #121FCF 0%, #55CBCF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.nav-link {
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    color: #0366d6;
+}
+
+.nav-link:hover {
+    color: #a7cdf9;
+}
+
+.card-user-img {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.dropdown-item {
+    padding: 5px;
+}
+
+.dropdown-item:hover {
+    background-color: #e7e5e5;
+}
