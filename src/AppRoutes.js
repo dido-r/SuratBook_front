@@ -15,12 +15,12 @@ export function AppRoutes() {
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/user/:id" element={<Profile />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
             <Route path="/group/:id" element={<GroupPage />} />
             <Route path="/groups" element={<GroupList />} />
             <Route path="/users" element={<UserList />} />
             <Route path="/groups/create-group" element={<CreateGroup />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
         </Routes>
     );
 }

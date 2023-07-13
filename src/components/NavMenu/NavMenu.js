@@ -1,9 +1,21 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './NavMenu.css';
+import axios from 'axios';
 
 export function NavMenu() {
+
     const [dropdown, setDropdown] = useState(false);
+    const navigate = useNavigate();
+
+    const signOut = async() => {
+
+        await axios.post('https://localhost:7062/api/logout', {}, {
+            withCredentials : true
+        });
+
+        navigate("/login");
+    }
 
     return (
         <header>
@@ -21,7 +33,7 @@ export function NavMenu() {
                                     <ul className="dropmenu dark">
                                         <Link className="dropdown-item" to="/user/1" onClick={() => setDropdown(!dropdown)}>My profile</Link>
                                         <hr/>
-                                        <Link className="dropdown-item" href="#">Sign out</Link>
+                                        <Link className="dropdown-item" onClick={() => signOut()}>Sign out</Link>
                                     </ul>
                                     :
                                     null
