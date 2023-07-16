@@ -87,3 +87,9 @@ input[type="date"]::before {
     color: #747474;
     width: 100%;
 }
+
+.error-msg{
+    text-align: center;
+    color: red;
+    margin-bottom: 10px;
+}

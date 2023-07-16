@@ -6,15 +6,25 @@ export function useForm(initValues) {
 
     const onChangeHandler = (e) => {
 
-        if (e.target.type === 'checkbox') {
+        // if (e.target.type === 'checkbox') {
 
-            setValues(x => ({ ...x, [e.target.name]: e.target.checked }));
-            
-        }else{
+        //     setValues(x => ({ ...x, [e.target.name]: e.target.checked }));
+        // }
 
-            setValues(x => ({ ...x, [e.target.name]: e.target.value }));
-        }
+        setValues(x => ({ ...x, [e.target.name]: e.target.value }));
     }
 
-    return { values, onChangeHandler }
+    const resetValues = (e) => {
+
+        let input = e.target.getElementsByTagName('input')[0];
+        
+        if (input.type === 'file') {
+
+            input.value = null;
+        }
+
+        setValues(initValues);
+    }
+
+    return { values, onChangeHandler, resetValues }
 }

@@ -11,16 +11,16 @@ import { GroupPage } from './components/Group/GroupPage/GroupPage';
 export function AppRoutes() {
 
     return (
-
-        <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/user/:id" element={<Profile />} />
-            <Route path="/group/:id" element={<GroupPage />} />
-            <Route path="/groups" element={<GroupList />} />
-            <Route path="/users" element={<UserList />} />
-            <Route path="/groups/create-group" element={<CreateGroup />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-        </Routes>
+        
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/user/:id" element={<Profile />} />
+                <Route path="/group/:id" element={<GroupPage />} />
+                <Route path="/groups" element={<GroupList />} />
+                <Route path="/users" element={<UserList />} />
+                <Route path="/groups/create-group" element={<CreateGroup />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+            </Routes>
     );
 }

@@ -6,6 +6,10 @@
     width: 70%;
 }
 
+.post-body{
+    min-width: 76rem;
+}
+
 .card-user-img {
     width: 50px;
     height: auto;

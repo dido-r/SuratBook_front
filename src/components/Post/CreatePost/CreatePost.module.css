@@ -1,11 +1,9 @@
-﻿.create-input:focus,
-.create-ta:focus {
+﻿.create-ta:focus {
     outline: none;
     border-color: #465d8b;
     box-shadow: inset 0 1px 1px #465d8b, 0 0 2px 1px #465d8b;
 }
 
-.create-input,
 .create-ta {
     width: 90%;
     margin: 5px;
@@ -69,7 +67,7 @@
     cursor: pointer;
 }
 
-.home-card {
+.create-post {
     margin-bottom: 20px;
     display: block;
     margin-left: auto;

@@ -1,9 +1,13 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './Register.module.css';
 import { useForm } from '../../hooks/useForm';
-import axios from 'axios';
+import { useState } from 'react';
+import { request } from '../../services/request';
 
 export function Register() {
+
+    const navigate = useNavigate();
+    const [error, setError] = useState(null);
 
     const { values, onChangeHandler } = useForm({
         firstName: '',
@@ -17,8 +21,17 @@ export function Register() {
     const onRegisterSubmit = async (e) => {
         
         e.preventDefault();
-        let result = await axios.post("https://localhost:7062/api/register", values)
-        console.log(result);
+        setError(null);
+
+        try {
+
+            var result = await request('post', 'api/user/register', values);
+            result.data === 'Successful register' ? navigate("/") : setError('Invalid credentials');
+
+        } catch (error) {
+
+            setError('Invalid credentials');
+        }
     }
 
     return (
@@ -27,6 +40,10 @@ export function Register() {
             <div className={styles['border-wrap']}>
                 <div className={styles['login-container']}>
                     <h2 className={styles['login-header']}>Register</h2>
+                    <h2 className={styles['login-header']}>Login</h2>
+                        {error !== null ? <div className={styles['error-msg']}>
+                            {error}
+                        </div> : null}
                     <form className={styles['login-form']} onSubmit={(e) => onRegisterSubmit(e)}>
                         <div><input className={styles['login-input']} type="text" placeholder="First name" name="firstName" required="required" value={values.firstName} onChange={(e) => onChangeHandler(e)}/></div>
                         <div><input className={styles['login-input']} type="text" placeholder="Last name" name="lastName" required="required" value={values.lastName} onChange={(e) => onChangeHandler(e)}/></div>
