@@ -31,8 +31,8 @@ export function Home() {
             <div className="d-flex">
                 <div className={styles['card-container']}>
 
-                    <CreatePost />
-                    <Post posts={posts}/>
+                    <CreatePost posts={posts} setPosts={setPosts}/>
+                    <Post posts={posts} setPosts={setPosts}/>
 
                 </div>
                 <div className={`${styles['onl-fr-sc']}`}>

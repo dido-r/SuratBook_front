@@ -6,14 +6,17 @@ import { Modal } from '../../Modal/Modal';
 import { request } from '../../../services/request';
 import { useCurrentUser } from '../../../hooks/useCookies';
 
-export function CreatePost() {
+export function CreatePost({
+    setPosts,
+    posts
+}) {
 
     const user = useCurrentUser();
 
     const { values, onChangeHandler, resetValues } = useForm({
 
         description: '',
-        dropboxPath: '',
+        dropboxPath: null,
         ownerId: ''
     });
 
@@ -34,13 +37,29 @@ export function CreatePost() {
                 values.dropboxPath = img['path_display'];
             }
             values.ownerId = user.userId;
-            await request('post', 'api/post/create-post', values);
+            let result = await request('post', 'api/post/create-post', values);
+            updatePosts(result);
             resetValues(e);
             
         } catch (error) {
 
             setModal(true);
         }
+    }
+
+    const updatePosts = (result) => {
+
+        const newPost = {
+            key: result.data,
+            description: values.description,
+            dropboxPath: values.dropboxPath,
+            likes: 0,
+            comments: 0,
+            ownerId: user.userId,
+            ownerName: user.userName
+        };
+        
+        setPosts(current => [newPost, ...current]);
     }
 
     return (
