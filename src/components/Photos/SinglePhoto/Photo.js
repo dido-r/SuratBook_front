@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import styles from './Photo.module.css'
 import { useDropBox } from "../../../hooks/useDropbox";
-import { PhotoSelected } from "../../PhotoSelected/PhotoSelected";
+import { PhotoSelected } from "../PhotoSelected/PhotoSelected";
 
 export function Photo({
     pic,
+    setPhotos
 }) {
 
     const { getFile } = useDropBox();
@@ -30,8 +31,8 @@ export function Photo({
 
     return (
         <>
-            {selected ? <PhotoSelected setSelected={setSelected} selectedSrc={selectedSrc}/> : null}
-            <img key={pic.key} className={styles['user-list-img']} src={src} alt="img" onClick={(e) => onSelect(e)} />
+            {selected ? <PhotoSelected setPhotos={setPhotos} setSelected={setSelected} selectedSrc={selectedSrc} pic={pic}/> : null}
+            <img className={styles['user-list-img']} src={src} alt="img" onClick={(e) => onSelect(e)} />
         </>
     );
 }

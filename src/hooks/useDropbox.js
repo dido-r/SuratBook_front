@@ -40,6 +40,17 @@ export function useDropBox() {
         }
     }
 
+    const deleteFile = async (filePath) => {
+        try {
+
+            await dbx.filesDelete({ path: filePath});
+
+        } catch (error) {
+
+            return new Error();
+        }
+    }
+
     // const getAllFiles = async (res) => {
 
     //     let template = {
@@ -65,5 +76,5 @@ export function useDropBox() {
     //     }
     // }
 
-    return { uploadFile, getFile };
+    return { uploadFile, getFile, deleteFile };
 }

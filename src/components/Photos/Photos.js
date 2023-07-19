@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { PhotoSelected } from '../PhotoSelected/PhotoSelected';
 import styles from './Photos.module.css';
 import { UploadPhoto } from './UploadImg/UploadPhoto';
 import { request } from '../../services/request';
@@ -34,7 +33,7 @@ export function Photos() {
             {modal ? <Modal message={'Could not load photos.'} setModal={setModal} /> : null}
             {upload ? <UploadPhoto setUpload={setUpload} setPhotos={setPhotos}/> : null}
             <div className={styles['images-container']}>
-                {photos.map(x => <Photo pic={x}/>)}
+                {photos.map(x => <Photo key={x.key} setPhotos={setPhotos} pic={x}/>)}
             </div>
         </>);
 }

@@ -15,7 +15,7 @@
     background-color: #1d1e1e;
     margin-left: 5%;
     margin-top: 2%;
-    padding: 70px;
+    padding: 20px 20px 50px 20px;
     border: 1px solid #888;
     max-width: 90%;
     max-height: 90%;
@@ -33,6 +33,7 @@
 
 .close-modal {
     color: #605f5f;
+    padding:0 ;
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -46,5 +47,12 @@
 }
 
 .modal-content span{
-    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.comment-section{
+    flex: 0 0 40%;
+    padding-left: 20px;
+    overflow-y: auto;
+    height: 480px;
 }
