@@ -1,22 +1,26 @@
 import styles from './PhotoSelected.module.css';
 
 export function PhotoSelected({
-    setModal
+    setSelected,
+    selectedSrc
 }) {
 
     const onCloseModal = () => {
-        setModal(false);
+        setSelected(false);
     }
 
     return (
         <div className={styles['modal-background']}>
             <div className={styles['modal-content']}>
                 <span className={styles['close-modal']} onClick={onCloseModal}>&times;</span>
-                <span className={styles['modal-likes']}>
-                    <span className="text-light">0 Likes</span>
+                <img className={styles['modal-img']} src={selectedSrc} alt="img" />
+                <span className="text-light">0 Likes</span>
+                <span className="text-light">0 Comments</span>
+                <div className={styles['modal-buttons']}>
                     <button className="btn btn-outline-light">Like</button>
-                </span>
-                <img className={styles['modal-img']} src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg" alt="img"/>
+                    <button className="btn btn-outline-light">Comment</button>
+                    <button className={'btn btn-outline-danger'}>Delete</button>
+                </div>
             </div>
         </div>
 

@@ -19,7 +19,6 @@ export function Post({
 
     const onPostDelete = async (id) => {
 
-        console.log(id)
         try {
 
             await request('post', 'api/post/delete-post', { id });

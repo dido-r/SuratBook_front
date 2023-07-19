@@ -17,8 +17,6 @@ export function useDropBox() {
 
     const uploadFile = async (file) => {
 
-        //let file = e.target.getElementsByTagName('input')[0].files[0];
-
         try {
 
             let res = await dbx.filesUpload({ path: `/${user.userId}/` + file.name, contents: file });
@@ -35,13 +33,37 @@ export function useDropBox() {
 
             let res = await dbx.filesGetThumbnail({ path: filePath, size: 'w640h480' });
             return res.result.fileBlob;
-            //setSrc(URL.createObjectURL(res.result.fileBlob));
 
         } catch (error) {
 
             return new Error();
         }
     }
+
+    // const getAllFiles = async (res) => {
+
+    //     let template = {
+    //         format: "jpeg",
+    //         mode: "strict",
+    //         size: "w640h480"
+    //     }
+        
+    //     try {
+
+    //         let array = await res;
+    //         let args = array.map(x => ({...template, path: x.dropboxPath}));
+    //         let data = {
+    //             entries: args
+    //         }
+    //         let response = await dbx.filesGetThumbnailBatch(data);
+            
+    //         return response.result;
+
+    //     } catch (error) {
+
+    //         return new Error();
+    //     }
+    // }
 
     return { uploadFile, getFile };
 }

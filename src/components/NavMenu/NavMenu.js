@@ -33,7 +33,7 @@ export function NavMenu() {
                                 </span>
                                 {dropdown ? 
                                     <ul className="dropmenu dark">
-                                        <Link className="dropdown-item" to="/user/1" onClick={() => setDropdown(!dropdown)}>My profile</Link>
+                                        <Link className="dropdown-item" to={`/user/${user.userId}`} onClick={() => setDropdown(!dropdown)}>My profile</Link>
                                         <hr/>
                                         <Link className="dropdown-item" onClick={() => signOut()}>Sign out</Link>
                                     </ul>

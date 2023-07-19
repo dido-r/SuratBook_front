@@ -1,30 +1,40 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PhotoSelected } from '../PhotoSelected/PhotoSelected';
 import styles from './Photos.module.css';
 import { UploadPhoto } from './UploadImg/UploadPhoto';
+import { request } from '../../services/request';
+import { useParams } from 'react-router-dom';
+import { Photo } from './SinglePhoto/Photo';
+import { Modal } from '../Modal/Modal';
 
 export function Photos() {
 
+    const params = useParams();
     const [modal, setModal] = useState(false);
     const [upload, setUpload] = useState(false);
+    const [photos, setPhotos] = useState([]);
+
+    useEffect(() => {
+
+        try {
+
+            request('get', `api/photo/get-photos?id=${params.id}`).then(x => setPhotos(x.data));
+
+        } catch {
+
+            setModal(true);
+        }
+    }, [params.id]);
 
     return (
         <>
             <div className={styles['add-photo']}>
                 <button onClick={() => setUpload(true)} className={`${styles['add-photo-btn']} btn btn-outline-light`}>Upload photo</button>
             </div>
-            {modal ? <PhotoSelected setModal={setModal} /> : null}
-            {upload ? <UploadPhoto setUpload={setUpload} /> : null}
+            {modal ? <Modal message={'Could not load photos.'} setModal={setModal} /> : null}
+            {upload ? <UploadPhoto setUpload={setUpload} setPhotos={setPhotos}/> : null}
             <div className={styles['images-container']}>
-                <img className={styles['user-list-img']} src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg" alt="img" onClick={() => { setModal(true) }} />
-                <img className={styles['user-list-img']} src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg" alt="img" onClick={() => { setModal(true) }} />
-                <img className={styles['user-list-img']} src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg" alt="img" onClick={() => { setModal(true) }} />
-                <img className={styles['user-list-img']} src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg" alt="img" onClick={() => { setModal(true) }} />
-                <img className={styles['user-list-img']} src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg" alt="img" onClick={() => { setModal(true) }} />
-                <img className={styles['user-list-img']} src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg" alt="img" onClick={() => { setModal(true) }} />
-                <img className={styles['user-list-img']} src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg" alt="img" onClick={() => { setModal(true) }} />
-                <img className={styles['user-list-img']} src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg" alt="img" onClick={() => { setModal(true) }} />
-                <img className={styles['user-list-img']} src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg" alt="img" onClick={() => { setModal(true) }} />
+                {photos.map(x => <Photo pic={x}/>)}
             </div>
         </>);
 }
