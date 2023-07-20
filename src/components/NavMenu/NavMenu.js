@@ -16,6 +16,7 @@ export function NavMenu() {
             withCredentials : true
         });
 
+        setDropdown(!dropdown);
         navigate("/login");
     }
 

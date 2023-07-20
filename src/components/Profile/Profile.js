@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { Info } from "../Info/Info";
-import { GroupList } from "../ListOfGroups/GroupList";
 import { UserList } from "../UserList/UserList";
 import { Photos } from "../Photos/Photos";
 import { Post } from "../Post/Post";
 import { Banner } from "./Banner/Banner";
 import { request } from "../../services/request";
 import { Modal } from "../Modal/Modal";
+import { GroupList } from "../Group/ListOfGroups/GroupList";
 
 export function Profile() {
 
     const [tag, setTag] = useState('post');
+    const [owner, setGroupTag] = useState('');
     const [modal, setModal] = useState(false);
     const [myPosts, setMyPosts] = useState([]);
 
@@ -36,7 +37,7 @@ export function Profile() {
             case 'friends':
                 return <UserList />;
             case 'groups':
-                return <GroupList />;
+                return <GroupList tag={owner}/>;
             case 'info':
                 return <Info />;
             default:
@@ -47,7 +48,7 @@ export function Profile() {
     return (
         <>
             {modal ? <Modal setModal={setModal} /> : null}
-            <Banner setTag={setTag} />
+            <Banner setTag={setTag} setGroupTag={setGroupTag}/>
             {renderSwitch(tag)}
         </>
     );

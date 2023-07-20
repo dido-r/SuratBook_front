@@ -34,39 +34,42 @@ export function Post({
         <>
             {edit ? <EditPost setModal={setModal} setEdit={setEdit} edit={edit} setPosts={setPosts} posts={posts} /> : null}
             {modal ? <Modal message='Something went wrong' setModal={setModal} /> : null}
-            {posts.map(x => (
-                <div key={x.key} className={`${styles['home-card']} card bg-dark bg-gradient`}>
-                    <Link to={`/user/${x.ownerId}`} className={`${styles['home-card-link']} card-body`}>
-                        <img className={styles["card-user-img"]} src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" />
-                        <span className={`${styles['card-body-span']} text-light`}>{x.ownerName}</span>
-                    </Link>
+            {posts.length === 0 ?
+                <h4 className='text-light text-center'>No posts yet</h4>
+                :
+                posts.map(x => (
+                    <div key={x.key} className={`${styles['home-card']} card bg-dark bg-gradient`}>
+                        <Link to={`/user/${x.ownerId}`} className={`${styles['home-card-link']} card-body`}>
+                            <img className={styles["card-user-img"]} src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" />
+                            <span className={`${styles['card-body-span']} text-light`}>{x.ownerName}</span>
+                        </Link>
 
-                    {x.dropboxPath !== null ?
-                        <PostImage path={x.dropboxPath} /> : null}
+                        {x.dropboxPath !== null ?
+                            <PostImage path={x.dropboxPath} /> : null}
 
-                    <div className={`${styles['post-body']} card-body`}>
-                        <p className="text-light">
-                            {x.description}
-                        </p>
-                        <p className="text-light">{x.likes} Likes {x.comments} Comments</p>
-                        <button onClick={() => setshowComment(!showComment)} className="btn btn-outline-light">Comment</button>
-                        <button className="btn btn-outline-light">Like</button>
-                        <button onClick={() => setEdit({ id: x.key, value: x.description })} className="btn btn-outline-light">Edit</button>
-                        <button onClick={() => onPostDelete(x.key)} className="btn btn-outline-light">Delete</button>
-                    </div>
-
-                    {showComment ?
-                        <div>
-                            <CreateComment />
-                            <Comment />
-                            <Comment />
-                            <Comment />
+                        <div className={`${styles['post-body']} card-body`}>
+                            <p className="text-light">
+                                {x.description}
+                            </p>
+                            <p className="text-light">{x.likes} Likes {x.comments} Comments</p>
+                            <button onClick={() => setshowComment(!showComment)} className="btn btn-outline-light">Comment</button>
+                            <button className="btn btn-outline-light">Like</button>
+                            <button onClick={() => setEdit({ id: x.key, value: x.description })} className="btn btn-outline-light">Edit</button>
+                            <button onClick={() => onPostDelete(x.key)} className="btn btn-outline-light">Delete</button>
                         </div>
-                        :
-                        null
-                    }
-                </div>
-            ))}
+
+                        {showComment ?
+                            <div>
+                                <CreateComment />
+                                <Comment />
+                                <Comment />
+                                <Comment />
+                            </div>
+                            :
+                            null
+                        }
+                    </div>
+                ))}
         </>
     );
 }

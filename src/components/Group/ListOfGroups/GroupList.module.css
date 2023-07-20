@@ -5,7 +5,6 @@
     text-align: center;
 }
 
-
 .group-container-section {
     width: 18%;
     margin: 10px;
@@ -14,4 +13,13 @@
 .group-container-link {
     cursor: pointer;
     text-decoration: none;
+}
+
+.create-group-btn {
+    width: 30%;
+    margin: 20px;
+    position: relative;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }

@@ -60,13 +60,14 @@ export function EditInfo({
     return (
         <div className={`${styles['edit-card']} card bg-dark bg-gradient`}>
             <div className="card-body">
+                <span className={styles['close-modal']} onClick={() => setEdit(false)}>&times;</span>
                 <form onSubmit={(e) => onEditInfoSubmit(e)}>
                     <h4 className={styles['create-h']}>Edit your information</h4><hr />
                     <input className={styles['create-input']} type="text" name="town" placeholder="Enter a town..." value={values.town} onChange={(e) => onChangeHandler(e)} /><br />
                     <input className={styles['create-input']} type="text" name="address" placeholder="Enter a address..." value={values.address} onChange={(e) => onChangeHandler(e)} /><br />
                     <input className={styles['create-input']} type="text" name="country" placeholder="Enter a country..." value={values.country} onChange={(e) => onChangeHandler(e)} /><br />
                     <input className={styles['create-input']} type="text" name="university" placeholder="Enter a university..." value={values.university} onChange={(e) => onChangeHandler(e)} /><br />
-                    <select className={styles['create-input']} id="cars" name="universityDegree" value={values.universityDegree} onChange={(e) => onChangeHandler(e)}>
+                    <select className={styles['create-input']} name="universityDegree" value={values.universityDegree} onChange={(e) => onChangeHandler(e)}>
                         <option value=""> --- Please Select Degree --- </option>
                         <option value={1}>Doctor</option>
                         <option value={2}>Master</option>

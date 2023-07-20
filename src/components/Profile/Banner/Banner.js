@@ -1,16 +1,28 @@
 import { useState } from 'react';
 import { useCurrentUser } from '../../../hooks/useCookies';
-import styles from './Banner.module.css'
+import styles from './Banner.module.css';
 
-export function Banner({ setTag }) {
+export function Banner({
+    setTag,
+    setGroupTag
+}) {
 
     const [active, setActive] = useState('post');
+    const [dropdown, setDropdown] = useState(false);
     const user = useCurrentUser();
 
     const configure = (param) => {
         setTag(param);
         setActive(param);
     }
+
+    const GroupConfigure = (param) => {
+
+        configure('groups'); 
+        setGroupTag(param); 
+        setDropdown(false);
+    }
+
 
     return (
         <div className={styles['collection-hero']}>
@@ -34,8 +46,18 @@ export function Banner({ setTag }) {
                     <li onClick={() => { configure('friends') }} className={styles['pofile-list']}>
                         <h5 className={`${styles['pofile-tags']} ${active === 'friends' ? styles['active-tag'] : null}`}>Friend</h5>
                     </li>
-                    <li onClick={() => { configure('groups') }} className={styles['pofile-list']}>
+                    <li onClick={() => { setDropdown(!dropdown) }} className={`${styles['pofile-list']} nav-item dropdown`}>
                         <h5 className={`${styles['pofile-tags']} ${active === 'groups' ? styles['active-tag'] : null}`}>Groups</h5>
+                        {dropdown ?
+
+                            <ul className={`${styles['dropdown-menu']} dropmenu dark`}>
+                                <span className="dropdown-item" onClick={() => GroupConfigure('joined')}>Joined groups</span>
+                                <hr />
+                                <span className="dropdown-item" onClick={() => GroupConfigure('owner')}>Created by me</span>
+                            </ul>
+                            :
+                            null
+                        }
                     </li>
                     <li onClick={() => { configure('info') }} className={styles['pofile-list']}>
                         <h5 className={`${styles['pofile-tags']} ${active === 'info' ? styles['active-tag'] : null}`}>Info</h5>

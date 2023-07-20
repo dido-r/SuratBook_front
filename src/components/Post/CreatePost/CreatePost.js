@@ -7,17 +7,29 @@ import { request } from '../../../services/request';
 import { useCurrentUser } from '../../../hooks/useCookies';
 
 export function CreatePost({
-    setPosts,
-    posts
+    setPosts
 }) {
 
     const user = useCurrentUser();
+    const pathname = window.location.pathname;
+
+    const checkForGroup = (pathname) => {
+
+        if(pathname.startsWith('/group')){
+            
+            let value = pathname.split('/');
+            return value[2];
+        }
+
+        return null;
+    }
 
     const { values, onChangeHandler, resetValues } = useForm({
 
         description: '',
         dropboxPath: null,
-        ownerId: ''
+        ownerId: '',
+        groupId: checkForGroup(pathname)
     });
 
     const { uploadFile } = useDropBox();

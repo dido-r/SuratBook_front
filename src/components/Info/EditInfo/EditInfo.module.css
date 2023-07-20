@@ -30,3 +30,17 @@ button {
     margin-right: 10%;
     width: 70%;
 }
+
+.close-modal {
+    color: #605f5f;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}

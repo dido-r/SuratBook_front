@@ -1,9 +1,14 @@
 import { useState } from 'react';
 import styles from './GroupHeader.module.css'
+import { useCurrentUser } from '../../../../hooks/useCookies';
 
-export function GroupHeader({setTag}) {
+export function GroupHeader({
+    setTag,
+    groupData
+}) {
 
     const [active, setActive] = useState('post');
+    const user = useCurrentUser();
 
     const configure = (param) => {
         setTag(param);
@@ -14,12 +19,13 @@ export function GroupHeader({setTag}) {
         <div className={styles['collection-hero']}>
             <div className={styles['img-container']}>
                 <img className={styles['collection-hero-image']} src="" alt="" />
-                <h2 className={styles['pofile-username']}>Group Name</h2>
+                <h2 className={styles['pofile-username']}>{groupData.name}</h2>
 
-                <div className={styles['group-btn']}>
-                    <button className="btn btn-outline-primary">Join group</button>
-                    <button className="btn btn-outline-danger">Leave group</button>
-                </div>  
+                {user.userId !== groupData.ownerId ?
+                    <div className={styles['group-btn']}>
+                        <button className="btn btn-outline-primary">Join group</button>
+                        <button className="btn btn-outline-danger">Leave group</button>
+                    </div> : <button className="btn btn-outline-danger">Delete</button>}
 
                 <hr className={styles['pofile-hr']} />
                 <ul className={styles['pofile-ul']}>

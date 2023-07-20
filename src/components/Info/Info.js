@@ -17,7 +17,7 @@ export function Info() {
 
     return (
         (!edit ?
-            <div className={styles['info-container']}>
+            <div className={`${styles['info-container']} bg-dark bg-gradient`}>
                 <div className={styles['main-info']}>
                     <ul>
                         <li>Town</li>
@@ -28,14 +28,14 @@ export function Info() {
                         <li>School</li>
                     </ul>
                 </div>
-                <div className={styles['user-info']}>
+                <div className={`${styles['user-info']} text-light`}>
                     <ul>
-                        <li>{info.town === undefined  ? 'No info yet...' : info.town}</li>
-                        <li>{info.address === undefined  ? 'No info yet...' : info.address}</li>
-                        <li>{info.country === undefined  ? 'No info yet...' : info.country}</li>
-                        <li>{info.university === undefined ? 'No info yet...' : info.university}</li>
-                        <li>{info.universityDegree === undefined || info.universityDegree === ''  ? 'No info yet...' : info.universityDegree}</li>
-                        <li>{info.school === undefined  ? 'No info yet...' : info.school}</li>
+                        <li>{info.town === null  ? 'No info yet...' : info.town}</li>
+                        <li>{info.address === null  ? 'No info yet...' : info.address}</li>
+                        <li>{info.country === null  ? 'No info yet...' : info.country}</li>
+                        <li>{info.university === null ? 'No info yet...' : info.university}</li>
+                        <li>{info.universityDegree === null || info.universityDegree === '' ? 'No info yet...' : info.universityDegree}</li>
+                        <li>{info.school === null  ? 'No info yet...' : info.school}</li>
                     </ul>
                 </div>
                 <button className={`${styles['edit-info-btn']} btn btn-outline-light`} onClick={() => { setEdit(true) }}>Edit</button>
