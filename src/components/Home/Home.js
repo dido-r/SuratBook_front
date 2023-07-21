@@ -31,7 +31,7 @@ export function Home() {
             <div className="d-flex">
                 <div className={styles['card-container']}>
 
-                    <CreatePost posts={posts} setPosts={setPosts}/>
+                    <CreatePost location={'home'} posts={posts} setPosts={setPosts}/>
                     <Post posts={posts} setPosts={setPosts}/>
 
                 </div>

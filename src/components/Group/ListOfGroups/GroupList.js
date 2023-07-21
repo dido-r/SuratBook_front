@@ -5,11 +5,12 @@ import { useState } from 'react';
 import { request } from '../../../services/request';
 
 export function GroupList({
-    tag
+    tag,
+    userId
 }) {
 
     const pathname = window.location.pathname;
-    const path = tag === 'joined' ? 'api/group/joined' : 'api/group/owner';
+    const path = tag === 'joined' ? `api/group/joined?userId=${userId}` : `api/group/owner?userId=${userId}`;
     const [groups, setGroups] = useState([])
 
     useEffect(() => {
@@ -35,9 +36,7 @@ export function GroupList({
                                     <h5 className="text-light">{x.name}</h5>
                                 </div>
                             </Link>
-                            <form>
-                                <button className="btn btn-outline-danger">Delete</button>
-                            </form>
+                            {tag === 'joined' ? <button className="btn btn-outline-danger">Leave</button> : <button className="btn btn-outline-danger">Delete</button>}
                         </section>
                     ))}
                 </div>

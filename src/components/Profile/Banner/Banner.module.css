@@ -30,6 +30,11 @@
     margin-top: 5em;
 }
 
+.pofile-hr-add {
+    width: 76%;
+    margin-left: 12%;
+}
+
 .pofile-tags {
     display: inline;
     color: #e9e9e9;

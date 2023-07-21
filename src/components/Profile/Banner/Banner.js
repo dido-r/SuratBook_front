@@ -1,26 +1,32 @@
 import { useState } from 'react';
-import { useCurrentUser } from '../../../hooks/useCookies';
 import styles from './Banner.module.css';
 
 export function Banner({
     setTag,
-    setGroupTag
+    setGroupTag,
+    user
 }) {
 
     const [active, setActive] = useState('post');
-    const [dropdown, setDropdown] = useState(false);
-    const user = useCurrentUser();
 
     const configure = (param) => {
-        setTag(param);
-        setActive(param);
+
+        if (param === 'groups' || param === 'joined' || param === 'owner') {
+
+            setTag('groups');
+            setActive(param);
+            setGroupTag(param);
+
+        } else {
+
+            setTag(param);
+            setActive(param);
+        }
     }
 
-    const GroupConfigure = (param) => {
+    const isGroupSection = () => {
 
-        configure('groups'); 
-        setGroupTag(param); 
-        setDropdown(false);
+        return active === 'groups' || active === 'joined' || active === 'owner';
     }
 
 
@@ -28,7 +34,7 @@ export function Banner({
         <div className={styles['collection-hero']}>
             <div className={styles['collection-container']}>
                 <img className={styles['profile-img']} src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" />
-                <h2 className={styles['pofile-username']}>{user.userName}</h2>
+                <h2 className={styles['pofile-username']}>{user.name}</h2>
 
                 <div className={styles['friend-btn']}>
                     <button className="btn btn-outline-primary">Add as friend</button>
@@ -46,23 +52,25 @@ export function Banner({
                     <li onClick={() => { configure('friends') }} className={styles['pofile-list']}>
                         <h5 className={`${styles['pofile-tags']} ${active === 'friends' ? styles['active-tag'] : null}`}>Friend</h5>
                     </li>
-                    <li onClick={() => { setDropdown(!dropdown) }} className={`${styles['pofile-list']} nav-item dropdown`}>
-                        <h5 className={`${styles['pofile-tags']} ${active === 'groups' ? styles['active-tag'] : null}`}>Groups</h5>
-                        {dropdown ?
-
-                            <ul className={`${styles['dropdown-menu']} dropmenu dark`}>
-                                <span className="dropdown-item" onClick={() => GroupConfigure('joined')}>Joined groups</span>
-                                <hr />
-                                <span className="dropdown-item" onClick={() => GroupConfigure('owner')}>Created by me</span>
-                            </ul>
-                            :
-                            null
-                        }
+                    <li onClick={() => { configure('groups') }} className={styles['pofile-list']}>
+                        <h5 className={`${styles['pofile-tags']} ${isGroupSection() ? styles['active-tag'] : null}`}>Groups</h5>
                     </li>
                     <li onClick={() => { configure('info') }} className={styles['pofile-list']}>
                         <h5 className={`${styles['pofile-tags']} ${active === 'info' ? styles['active-tag'] : null}`}>Info</h5>
                     </li>
                 </ul>
+                {isGroupSection() ?
+                    <>
+                        <hr className={styles['pofile-hr-add']} />
+                        <ul className={styles['pofile-ul']}>
+                            <li onClick={() => configure('joined')} className={styles['pofile-list']}>
+                                <h5 className={`${styles['pofile-tags']} ${active === 'joined' || active === 'groups' ? styles['active-tag'] : null}`}>Joined groups</h5>
+                            </li>
+                            <li onClick={() => configure('owner')} className={styles['pofile-list']}>
+                                <h5 className={`${styles['pofile-tags']} ${active === 'owner' ? styles['active-tag'] : null}`}>Created groups</h5>
+                            </li>
+                        </ul>
+                    </> : null}
             </div>
         </div>
     );

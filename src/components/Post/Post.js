@@ -13,7 +13,7 @@ export function Post({
     setPosts
 }) {
 
-    const [showComment, setshowComment] = useState(false);
+    const [showComment, setShowComment] = useState(false);
     const [edit, setEdit] = useState(null);
     const [modal, setModal] = useState(false);
 
@@ -52,13 +52,13 @@ export function Post({
                                 {x.description}
                             </p>
                             <p className="text-light">{x.likes} Likes {x.comments} Comments</p>
-                            <button onClick={() => setshowComment(!showComment)} className="btn btn-outline-light">Comment</button>
+                            <button onClick={() => setShowComment(current => current !== x.key ? x.key : false)} className="btn btn-outline-light">Comment</button>
                             <button className="btn btn-outline-light">Like</button>
                             <button onClick={() => setEdit({ id: x.key, value: x.description })} className="btn btn-outline-light">Edit</button>
                             <button onClick={() => onPostDelete(x.key)} className="btn btn-outline-light">Delete</button>
                         </div>
 
-                        {showComment ?
+                        {showComment === x.key ?
                             <div>
                                 <CreateComment />
                                 <Comment />
