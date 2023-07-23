@@ -27,7 +27,7 @@ export function GroupPage() {
             case 'post':
                 return <><CreatePost location={'group'} groupData={{groupData, isMember}} user={null} setPosts={setPosts}/><Post posts={posts} setPosts={setPosts}/></>;
             case 'photos':
-                return <Photos />;
+                return <Photos location='group'/>;
             case 'members':
                 return <Members groupId={groupData.id}/>;
             case 'info':

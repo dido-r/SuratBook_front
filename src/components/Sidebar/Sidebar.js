@@ -34,7 +34,7 @@ export function Sidebar() {
                 <br />
                 <li>
                     <Link to="">
-                        <FontAwesomeIcon className={styles['icon']} icon={faNewspaper} title="News" />
+                        <FontAwesomeIcon className={styles['icon']} icon={faNewspaper} title="Events" />
                     </Link>
                 </li>
                 <br />

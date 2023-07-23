@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Info } from "../Info/Info";
-import { UserList } from "../UserList/UserList";
 import { Photos } from "../Photos/Photos";
 import { Post } from "../Post/Post";
 import { Banner } from "./Banner/Banner";
@@ -9,6 +8,7 @@ import { Modal } from "../Modal/Modal";
 import { GroupList } from "../Group/ListOfGroups/GroupList";
 import { useParams } from "react-router-dom";
 import { CreatePost } from "../Post/CreatePost/CreatePost";
+import { Friends } from '../Friends/Friends';
 
 export function Profile() {
 
@@ -40,7 +40,7 @@ export function Profile() {
             case 'photos':
                 return <Photos />;
             case 'friends':
-                return <UserList />;
+                return <Friends />;
             case 'groups':
                 return <GroupList tag={groupTag} userId={param.id}/>;
             case 'info':

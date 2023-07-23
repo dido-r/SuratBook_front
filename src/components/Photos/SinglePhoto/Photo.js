@@ -5,7 +5,8 @@ import { PhotoSelected } from "../PhotoSelected/PhotoSelected";
 
 export function Photo({
     pic,
-    setPhotos
+    setPhotos,
+    location
 }) {
 
     const { getFile } = useDropBox();
@@ -31,7 +32,7 @@ export function Photo({
 
     return (
         <>
-            {selected ? <PhotoSelected setPhotos={setPhotos} setSelected={setSelected} selectedSrc={selectedSrc} pic={pic}/> : null}
+            {selected ? <PhotoSelected location={location} setPhotos={setPhotos} setSelected={setSelected} selectedSrc={selectedSrc} pic={pic}/> : null}
             <img className={styles['user-list-img']} src={src} alt="img" onClick={(e) => onSelect(e)} />
         </>
     );

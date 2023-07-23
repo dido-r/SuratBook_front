@@ -3,12 +3,14 @@ import { EditInfo } from './EditInfo/EditInfo';
 import styles from './Info.module.css';
 import { request } from '../../services/request';
 import { useParams } from 'react-router-dom';
+import { useCurrentUser } from '../../hooks/useCookies';
 
 export function Info() {
 
     const [edit, setEdit] = useState(false);
     const [info, setInfo] = useState({});
     const params = useParams();
+    const user = useCurrentUser()
 
     useEffect(() => {
 
@@ -38,7 +40,7 @@ export function Info() {
                         <li>{info.school === null  ? 'No info yet...' : info.school}</li>
                     </ul>
                 </div>
-                <button className={`${styles['edit-info-btn']} btn btn-outline-light`} onClick={() => { setEdit(true) }}>Edit</button>
+                {user.userId === params.id ? <button className={`${styles['edit-info-btn']} btn btn-outline-light`} onClick={() => { setEdit(true) }}>Edit</button> : null}
             </div>
             :
             <EditInfo params={params} setEdit={setEdit} setInfo={setInfo}/>)

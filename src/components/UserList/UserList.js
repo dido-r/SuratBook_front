@@ -1,96 +1,45 @@
+import { useState } from 'react';
 import styles from './UserList.module.css';
-import { Link } from 'react-router-dom';
+import { Suggestions } from './Suggestions/Suggestions';
+import { SentRequests } from './SentRequests/SentRequests';
+import { Invitations } from './Invitations/Invitations';
 
 export function UserList() {
 
-    const pathname = window.location.pathname
+    const [active, setActive] = useState('all');
+
+    const configure = (param) => {
+
+        setActive(param);
+    }
+
+    const renderSwitch = (tag) => {
+        switch (tag) {
+            case 'all':
+                return <Suggestions/>;
+            case 'sent':
+                return <SentRequests/>;
+            case 'request':
+                return <Invitations/>;
+            default:
+                return <Suggestions/>;
+        }
+    }
 
     return (
-
-        <div className={styles['user-container']} style={pathname === "/users" ? { "paddingTop": "5%" } : null}>
-            <section className={`${styles['friends-container-section']} bg-dark bg-gradient`}>
-                <Link to="/user/2" className={styles['friends-container-link']}>
-                    <img className="card-img-top" src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg" alt="img" />
-
-                    <div className="card-body">
-                        <h5 className="text-light">Username</h5>
-                    </div>
-                </Link>
-                <form>
-                    <button className="btn btn-outline-primary">Add</button>
-                    <button className="btn btn-outline-danger">Remove</button>
-                </form>
-            </section>
-
-            <section className={`${styles['friends-container-section']} bg-dark bg-gradient`}>
-                <Link to="/user/2" className={styles['friends-container-link']}>
-                    <img className="card-img-top" src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg" alt="img" />
-
-                    <div className="card-body">
-                        <h5 className="text-light">Username</h5>
-                    </div>
-                </Link>
-                <form>
-                    <button className="btn btn-outline-primary">Add</button>
-                    <button className="btn btn-outline-danger">Remove</button>
-                </form>
-            </section>
-
-            <section className={`${styles['friends-container-section']} bg-dark bg-gradient`}>
-                <Link to="/user/2" className={styles['friends-container-link']}>
-                    <img className="card-img-top" src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg" alt="img" />
-
-                    <div className="card-body">
-                        <h5 className="text-light">Username</h5>
-                    </div>
-                </Link>
-                <form>
-                    <button className="btn btn-outline-primary">Add</button>
-                    <button className="btn btn-outline-danger">Remove</button>
-                </form>
-            </section>
-
-            <section className={`${styles['friends-container-section']} bg-dark bg-gradient`}>
-                <Link to="/user/2" className={styles['friends-container-link']}>
-                    <img className="card-img-top" src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg" alt="img" />
-
-                    <div className="card-body">
-                        <h5 className="text-light">Username</h5>
-                    </div>
-                </Link>
-                <form>
-                    <button className="btn btn-outline-primary">Add</button>
-                    <button className="btn btn-outline-danger">Remove</button>
-                </form>
-            </section>
-
-            <section className={`${styles['friends-container-section']} bg-dark bg-gradient`}>
-                <Link to="/user/2" className={styles['friends-container-link']}>
-                    <img className="card-img-top" src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg" alt="img" />
-
-                    <div className="card-body">
-                        <h5 className="text-light">Username</h5>
-                    </div>
-                </Link>
-                <form>
-                    <button className="btn btn-outline-primary">Add</button>
-                    <button className="btn btn-outline-danger">Remove</button>
-                </form>
-            </section>
-
-            <section className={`${styles['friends-container-section']} bg-dark bg-gradient`}>
-                <Link to="/user/2" className={styles['friends-container-link']}>
-                    <img className="card-img-top" src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg" alt="img" />
-
-                    <div className="card-body">
-                        <h5 className="text-light">Username</h5>
-                    </div>
-                </Link>
-                <form>
-                    <button className="btn btn-outline-primary">Add</button>
-                    <button className="btn btn-outline-danger">Remove</button>
-                </form>
-            </section>
-        </div>
+        <>
+            <ul className={styles['pofile-ul']}>
+                <li onClick={() => { configure('all') }} className={styles['pofile-list']}>
+                    <h5 className={`${styles['pofile-tags']} ${active === 'all' ? styles['active-tag'] : null}`}>Suggestions</h5>
+                </li>
+                <li onClick={() => { configure('sent') }} className={styles['pofile-list']}>
+                    <h5 className={`${styles['pofile-tags']} ${active === 'sent' ? styles['active-tag'] : null}`}>Sent requests</h5>
+                </li>
+                <li onClick={() => { configure('request') }} className={styles['pofile-list']}>
+                    <h5 className={`${styles['pofile-tags']} ${active === 'request' ? styles['active-tag'] : null}`}>Friend requests</h5>
+                </li>
+            </ul>
+            {renderSwitch(active)}
+        </>
     );
 }

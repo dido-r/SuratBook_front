@@ -8,7 +8,8 @@ export function PhotoSelected({
     setSelected,
     selectedSrc,
     pic,
-    setPhotos
+    setPhotos,
+    location
 }) {
 
     const { deleteFile } = useDropBox();
@@ -32,10 +33,11 @@ export function PhotoSelected({
                 <div className='d-flex'>
                     <div className={styles['photo-section']}>
                         <img className={styles['modal-img']} src={selectedSrc} alt="img" />
-                        <span className="text-light">0 Likes</span>
-                        <span className="text-light">0 Comments</span>
+                        <span className="text-light">{pic.likes} Likes</span>
+                        <span className="text-light">{pic.comments} Comments</span>
                     </div>
                     <div className={styles['comment-section']}>
+                        {location === 'group' ? <p className={`${styles['post-descr']} text-light`}>{pic.description}</p> : null}
                         <CreateComment />
                         <Comment />
                         <Comment />

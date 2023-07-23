@@ -3,7 +3,7 @@ import { Cookies } from "react-cookie";
 
 const host = 'https://localhost:7062/';
 
-export async function request(method, path, obj) {
+export async function request(method, path, obj, mimeType) {
 
     var cookies = new Cookies();
     var token = cookies.get('surat_token');

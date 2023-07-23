@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import styles from './GroupInfo.module.css';
 import { EditGroupInfo } from './EditGroupInfo/EditGroupInfo';
+import { useCurrentUser } from '../../../hooks/useCookies';
 
 export function GroupInfo({
     groupData,
     setGroupData
 }) {
 
-    const [edit, setEdit] = useState(false)
+    const [edit, setEdit] = useState(false);
+    const user = useCurrentUser();
 
     return (
         (!edit ?
@@ -24,7 +26,7 @@ export function GroupInfo({
                         <li>{groupData.groupInfo}</li>
                     </ul>
                 </div>
-                <button className={`${styles['edit-info-btn']} btn btn-outline-light`} onClick={() => { setEdit(true) }}>Edit</button>
+                {user.userId.toUpperCase() === groupData.ownerId ? <button className={`${styles['edit-info-btn']} btn btn-outline-light`} onClick={() => { setEdit(true) }}>Edit</button> : null}
             </div>
             :
             <EditGroupInfo setGroupData={setGroupData} setEdit={setEdit} />)

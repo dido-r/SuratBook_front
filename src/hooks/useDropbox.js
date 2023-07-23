@@ -1,9 +1,9 @@
+import { useParams } from 'react-router-dom';
 import { Dropbox, DropboxAuth } from '../../node_modules/dropbox/dist/Dropbox-sdk.js';
-import { useCurrentUser } from '../hooks/useCookies.js'
 
 export function useDropBox() {
 
-    const user = useCurrentUser();
+    const param = useParams();
 
     let auth = new DropboxAuth({
         clientId: '5jhx44i9i2u7m7g',
@@ -19,7 +19,7 @@ export function useDropBox() {
 
         try {
 
-            let res = await dbx.filesUpload({ path: `/${user.userId}/` + file.name, contents: file });
+            let res = await dbx.filesUpload({ path: `/${param.id}/` + file.name, contents: file});
             return res.result;
 
         } catch (error) {

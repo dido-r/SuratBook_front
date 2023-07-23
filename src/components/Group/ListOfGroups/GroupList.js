@@ -10,7 +10,7 @@ export function GroupList({
 }) {
 
     const pathname = window.location.pathname;
-    const path = tag === 'joined' ? `api/group/joined?userId=${userId}` : `api/group/owner?userId=${userId}`;
+    const path = tag === 'owner' ? `api/group/owner?userId=${userId}` : `api/group/joined?userId=${userId}`;
     const [groups, setGroups] = useState([])
 
     useEffect(() => {
@@ -21,10 +21,10 @@ export function GroupList({
     return (
 
         <div style={pathname === "/groups" ? { "paddingTop": "5%" } : null}>
-            <Link to="/groups/create-group" className={`${styles['create-group-btn']} btn btn-outline-light`}>Create group</Link>
+
 
             {groups.length === 0 ?
-                <h4 className='text-light text-center'>No groups, created by you</h4>
+                <h4 className='text-light text-center'>No groups</h4>
                 :
                 <div className={styles['group-container']} >
                     {groups.map(x => (

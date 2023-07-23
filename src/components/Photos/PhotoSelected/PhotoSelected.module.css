@@ -56,3 +56,7 @@
     overflow-y: auto;
     height: 480px;
 }
+
+.post-descr{
+    white-space: break-spaces;
+}
