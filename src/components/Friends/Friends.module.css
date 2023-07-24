@@ -5,11 +5,10 @@
     text-align: center;
 }
 
-    .friends-container-section {
-        width: 18%;
-        margin: 10px;
-        
-    }
+.friends-container-section {
+    width: 18%;
+    margin: 10px;
+}
 
 .friends-container-link {
     cursor: pointer;

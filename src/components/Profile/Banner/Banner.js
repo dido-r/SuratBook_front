@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './Banner.module.css';
+import { useCurrentUser } from '../../../hooks/useCookies';
+import { request } from '../../../services/request';
 
 export function Banner({
     setTag,
@@ -8,6 +10,29 @@ export function Banner({
 }) {
 
     const [active, setActive] = useState('post');
+    const [areFriends, setAreFriends] = useState('');
+    const currentUser = useCurrentUser();
+
+    const checkFriendship = () => {
+
+        request('get', `api/friend/check-friendship?friendId=${user.id}`).then(x => setAreFriends(x.data));
+    }
+
+    const renderSwitch = (areFriends) => {
+
+        checkFriendship();
+        
+        switch (areFriends) {
+            case 'No friends':
+                return <button className="btn btn-outline-primary">Add as friend</button>;
+            case 'Pending request':
+                return <button className="btn btn-outline-light">Approve</button>;
+            case 'Friends':
+                return <button className="btn btn-outline-danger">Remove from friends</button>;
+            default:
+                return <></>;
+        }
+    }
 
     const configure = (param) => {
 
@@ -36,10 +61,11 @@ export function Banner({
                 <img className={styles['profile-img']} src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" />
                 <h2 className={styles['pofile-username']}>{user.name}</h2>
 
+                {currentUser.userId !== user.id ? 
                 <div className={styles['friend-btn']}>
-                    <button className="btn btn-outline-primary">Add as friend</button>
-                    <button className="btn btn-outline-danger">Remove from friends</button>
-                </div>
+                    {renderSwitch(areFriends)}
+                </div> : null}
+                
 
                 <hr className={styles['pofile-hr']} />
                 <ul className={styles['pofile-ul']}>
