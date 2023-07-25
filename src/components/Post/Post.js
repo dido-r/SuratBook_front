@@ -17,6 +17,7 @@ export function Post({
     const [showComment, setShowComment] = useState(false);
     const [edit, setEdit] = useState(null);
     const [modal, setModal] = useState(false);
+    const [comments, setComments] = useState([]);
     const currentUser = useCurrentUser()
 
     const onPostDelete = async (id) => {
@@ -36,6 +37,13 @@ export function Post({
         
         await request('post', `api/post/like?postId=${id}`);
         setPosts(current => current.map(x => x.key === id ? ({ ...x, likes: x.likes + 1, isLiked: true }) : x));
+    }
+
+    const onCommentSelect = async (postId) => {
+
+        let response = await request('get', `api/post/get-comments?postId=${postId.toLowerCase()}`);
+        setComments(response.data);
+        setShowComment(current => current !== postId ? postId : false)
     }
 
     return (
@@ -60,7 +68,7 @@ export function Post({
                                 {x.description}
                             </p>
                             <p className="text-light">{x.likes} Likes {x.comments} Comments</p>
-                            <button onClick={() => setShowComment(current => current !== x.key ? x.key : false)} className="btn btn-outline-light">Comment</button>
+                            <button onClick={() => onCommentSelect(x.key)} className="btn btn-outline-light">Comment</button>
 
                             {currentUser.userId.toUpperCase() !== x.ownerId ?
                                 !x.isLiked ? <button className="btn btn-outline-light" onClick={() => onPostLike(x.key)}>Like</button> : null
@@ -73,10 +81,8 @@ export function Post({
 
                         {showComment === x.key ?
                             <div>
-                                <CreateComment />
-                                <Comment />
-                                <Comment />
-                                <Comment />
+                                <CreateComment location='post' pic={x} setComments={setComments}/>
+                                <Comment comments={comments}/>
                             </div>
                             :
                             null

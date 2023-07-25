@@ -4,6 +4,7 @@ import { useDropBox } from '../../../hooks/useDropbox';
 import { CreateComment } from '../../Comment/CreateComment/CreateComment';
 import { Comment } from '../../Comment/Comment';
 import { useCurrentUser } from '../../../hooks/useCookies';
+import { useEffect, useState } from 'react';
 
 export function PhotoSelected({
     setSelected,
@@ -14,10 +15,15 @@ export function PhotoSelected({
 }) {
 
     const { deleteFile } = useDropBox();
-    const currentUser = useCurrentUser()
+    const currentUser = useCurrentUser();
+    const [comments, setComments] = useState([]);
     const onCloseModal = () => {
         setSelected(false);
     }
+
+    useEffect(() => {
+        request('get', `api/photo/get-comments?photoId=${pic.key.toLowerCase()}`).then(x => setComments(x.data));
+    }, [pic.key]);
 
     const onPhotoDelete = async (photo) => {
 
@@ -38,7 +44,7 @@ export function PhotoSelected({
         <div className={styles['modal-background']}>
             <div className={styles['modal-content']}>
                 <span className={styles['close-modal']} onClick={onCloseModal}>&times;</span>
-                <div className='d-flex'>
+                <div className='d-flex flex-wrap'>
                     <div className={styles['photo-section']}>
                         <img className={styles['modal-img']} src={selectedSrc} alt="img" />
                         <span className="text-light">{pic.likes} Likes</span>
@@ -46,9 +52,8 @@ export function PhotoSelected({
                     </div>
                     <div className={styles['comment-section']}>
                         {location === 'group' ? <p className={`${styles['post-descr']} text-light`}>{pic.description}</p> : null}
-                        <CreateComment />
-                        <Comment />
-                        <Comment />
+                        <CreateComment location='photo' pic={pic} setComments={setComments}/>
+                        <Comment comments={comments}/>
                     </div>
                 </div>
                 <div className={styles['modal-buttons']}>
