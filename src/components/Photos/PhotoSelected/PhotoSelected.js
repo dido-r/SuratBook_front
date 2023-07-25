@@ -3,6 +3,7 @@ import { request } from '../../../services/request';
 import { useDropBox } from '../../../hooks/useDropbox';
 import { CreateComment } from '../../Comment/CreateComment/CreateComment';
 import { Comment } from '../../Comment/Comment';
+import { useCurrentUser } from '../../../hooks/useCookies';
 
 export function PhotoSelected({
     setSelected,
@@ -13,6 +14,7 @@ export function PhotoSelected({
 }) {
 
     const { deleteFile } = useDropBox();
+    const currentUser = useCurrentUser()
     const onCloseModal = () => {
         setSelected(false);
     }
@@ -24,6 +26,12 @@ export function PhotoSelected({
         await deleteFile(photo.filePath);
         setPhotos(current => current.filter(x => x.key !== id));
         setSelected(false);
+    }
+
+    const onPhotoLike = async (photoId) => {
+
+        await request('post', 'api/photo/like', photoId)
+        setPhotos(current => current.map(x => x.key === photoId ? ({ ...x, likes: x.likes + 1, isLiked: true }) : x));
     }
 
     return (
@@ -44,9 +52,10 @@ export function PhotoSelected({
                     </div>
                 </div>
                 <div className={styles['modal-buttons']}>
-                    <button className="btn btn-outline-light">Like</button>
+                    {currentUser.userId.toUpperCase() !== pic.ownerId ?
+                        !pic.isLiked ? <button className="btn btn-outline-light" onClick={() => onPhotoLike(pic.key)}>Like</button> : null :
+                        <button className={'btn btn-outline-danger'} onClick={() => onPhotoDelete({ id: pic.key, filePath: pic.dropboxPath })}>Delete</button>}
                     <button className="btn btn-outline-light">Comment</button>
-                    <button className={'btn btn-outline-danger'} onClick={() => onPhotoDelete({ id: pic.key, filePath: pic.dropboxPath })}>Delete</button>
                 </div>
             </div>
         </div>

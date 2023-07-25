@@ -7,6 +7,7 @@ import { PostImage } from "./PostImage/PostImage";
 import { EditPost } from "./EditPost/EditPost";
 import { request } from "../../services/request";
 import { Modal } from "../Modal/Modal";
+import { useCurrentUser } from '../../hooks/useCookies';
 
 export function Post({
     posts,
@@ -16,6 +17,7 @@ export function Post({
     const [showComment, setShowComment] = useState(false);
     const [edit, setEdit] = useState(null);
     const [modal, setModal] = useState(false);
+    const currentUser = useCurrentUser()
 
     const onPostDelete = async (id) => {
 
@@ -28,6 +30,12 @@ export function Post({
 
             setModal(true);
         }
+    }
+
+    const onPostLike = async (id) => {
+        
+        await request('post', `api/post/like?postId=${id}`);
+        setPosts(current => current.map(x => x.key === id ? ({ ...x, likes: x.likes + 1, isLiked: true }) : x));
     }
 
     return (
@@ -53,9 +61,14 @@ export function Post({
                             </p>
                             <p className="text-light">{x.likes} Likes {x.comments} Comments</p>
                             <button onClick={() => setShowComment(current => current !== x.key ? x.key : false)} className="btn btn-outline-light">Comment</button>
-                            <button className="btn btn-outline-light">Like</button>
-                            <button onClick={() => setEdit({ id: x.key, value: x.description })} className="btn btn-outline-light">Edit</button>
-                            <button onClick={() => onPostDelete(x.key)} className="btn btn-outline-light">Delete</button>
+
+                            {currentUser.userId.toUpperCase() !== x.ownerId ?
+                                !x.isLiked ? <button className="btn btn-outline-light" onClick={() => onPostLike(x.key)}>Like</button> : null
+                                :
+                                <>
+                                    <button onClick={() => setEdit({ id: x.key, value: x.description })} className="btn btn-outline-light">Edit</button>
+                                    <button onClick={() => onPostDelete(x.key)} className="btn btn-outline-light">Delete</button>
+                                </>}
                         </div>
 
                         {showComment === x.key ?

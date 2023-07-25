@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './Banner.module.css';
 import { useCurrentUser } from '../../../hooks/useCookies';
 import { request } from '../../../services/request';
