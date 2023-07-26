@@ -13,6 +13,7 @@ export function useForm(initValues) {
 
         setValues(initValues);
         let input = e.target.getElementsByTagName('input')[0];
+        let select = e.target.getElementsByTagName('select')[0];
         
         if (input === undefined) {
 
@@ -22,6 +23,11 @@ export function useForm(initValues) {
         if (input.type === 'file') {
 
             input.value = null;
+        }
+
+        if (select !== undefined) {
+
+            select.selectedIndex = 0;
         }
     }
 

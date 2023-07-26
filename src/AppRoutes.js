@@ -7,6 +7,7 @@ import { UserList } from "./components/UserList/UserList";
 import { CreateGroup } from './components/Group/CreateGroup/CreateGroup';
 import { GroupPage } from './components/Group/GroupPage/GroupPage';
 import { GroupExplore } from './components/Group/GroupExplore/GroupExplore';
+import { SearchResults } from './components/SearchResults/SearchResults';
 
 export function AppRoutes() {
 
@@ -21,6 +22,7 @@ export function AppRoutes() {
                 <Route path="/groups/create-group" element={<CreateGroup />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/search/:place" element={<SearchResults />} />
             </Routes>
     );
 }
