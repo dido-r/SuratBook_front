@@ -61,7 +61,7 @@ export function NavMenu() {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <img className="card-user-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt='img' />
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li className="nav-item dropdown">
+                            <li className="nav-item dropdown text-light">
                                 <span className="nav-link dropdown-toggle" onClick={() => setDropdown(!dropdown)}>
                                     {user.userName}
                                 </span>

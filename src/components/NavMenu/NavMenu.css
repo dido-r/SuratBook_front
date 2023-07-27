@@ -52,7 +52,8 @@ html {
     cursor: pointer;
     font-size: 16px;
     font-weight: 500;
-    color: #0366d6;
+    color: #e5e2e2;
+    letter-spacing: 2px;
 }
 
 .nav-link:hover {

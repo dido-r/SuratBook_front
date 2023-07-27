@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
-import styles from './GroupExplore.module.css';
+import styles from './AllGroups.module.css';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { request } from '../../../services/request';
 
-export function GroupExplore() {
+export function AllGroups() {
 
     const [allGroups, setAllGroups] = useState([])
 

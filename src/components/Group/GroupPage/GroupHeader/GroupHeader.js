@@ -7,11 +7,13 @@ import { Modal } from '../../../Modal/Modal';
 export function GroupHeader({
     setTag,
     groupData,
-    isMember
+    isMember,
+    setIsMember
 }) {
 
     const [active, setActive] = useState('post');
     const [modal, setModal] = useState(false);
+    const [pending, setPending] = useState(false);
     const user = useCurrentUser();
 
     const configure = (param) => {
@@ -23,13 +25,40 @@ export function GroupHeader({
 
         try {
 
-            param === 'leave' ? await request('post', `api/group/leave?groupId=${groupData.id}`) : await request('post', `api/group/join?groupId=${groupData.id}`);
-            isMember.setIsMember(!isMember.isMember);
+            if (param === 'leave') {
 
+                await request('post', `api/group/leave?groupId=${groupData.id}`);
+                isMember.setIsMember(false);
+
+            } else if (param === 'join') {
+
+                if(groupData.access === 'Public'){
+
+                    await request('post', `api/group/join?groupId=${groupData.id}`);
+                    isMember.setIsMember(true);
+
+                }else if(groupData.access === 'Private'){
+
+                    await request('post', `api/group/join-private?groupId=${groupData.id}`);
+                    setPending(true);
+                }
+            }
         } catch {
 
             setModal(true);
         }
+    }
+
+    const checkForPendingRequests = () => {
+        
+        request('get', `api/group/membership-pending?groupId=${groupData.id}`).then(x => setPending(x.data));
+        
+        if(pending){
+
+            return true;
+        }
+
+        return false;
     }
 
     return (
@@ -44,7 +73,8 @@ export function GroupHeader({
                         <button className="btn btn-outline-danger">Delete</button> :
                         <div className={styles['group-btn']}>
                             {isMember.isMember ? <button className="btn btn-outline-danger" onClick={() => onGroupEvent('leave')}>Leave group</button>
-                                : <button className="btn btn-outline-primary" onClick={() => onGroupEvent('join')}>Join group</button>}
+                                : 
+                                checkForPendingRequests() ? <button className={`${styles['approval']} text-light`}>Waiting for approval</button> : <button className="btn btn-outline-primary" onClick={() => onGroupEvent('join')}>Join group</button>}
                         </div>}
 
                     <hr className={styles['pofile-hr']} />
@@ -58,6 +88,10 @@ export function GroupHeader({
                         <li onClick={() => { configure('members') }} className={styles['pofile-list']}>
                             <h5 className={`${styles['pofile-tags']} ${active === 'members' ? styles['active-tag'] : null}`}>Members</h5>
                         </li>
+                        {user.userId.toUpperCase() === groupData.ownerId ?
+                            <li onClick={() => { configure('requests') }} className={styles['pofile-list']}>
+                                <h5 className={`${styles['pofile-tags']} ${active === 'requests' ? styles['active-tag'] : null}`}>Membership requests</h5>
+                            </li> : null}
                         <li onClick={() => { configure('info') }} className={styles['pofile-list']}>
                             <h5 className={`${styles['pofile-tags']} ${active === 'info' ? styles['active-tag'] : null}`}>Info</h5>
                         </li>

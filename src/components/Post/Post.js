@@ -24,11 +24,11 @@ export function Post({
 
         try {
 
-            await request('post', 'api/post/delete-post', { id });
+            await request('post', `api/post/delete-post?postId=${id}`);
             setPosts((current) => current.filter(x => x.key !== id));
 
-        } catch {
-
+        } catch(error) {
+            
             setModal(true);
         }
     }
@@ -70,7 +70,7 @@ export function Post({
                             <p className="text-light">{x.likes} Likes {x.comments} Comments</p>
                             <button onClick={() => onCommentSelect(x.key)} className="btn btn-outline-light">Comment</button>
 
-                            {currentUser.userId.toUpperCase() !== x.ownerId ?
+                            {currentUser.userId !== x.ownerId.toLowerCase() ?
                                 !x.isLiked ? <button className="btn btn-outline-light" onClick={() => onPostLike(x.key)}>Like</button> : null
                                 :
                                 <>
