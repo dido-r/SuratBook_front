@@ -6,11 +6,13 @@ export function Layout({ children }) {
     
     const location = useLocation();
 
+
     return (
         <div>
             {location.pathname !== '/login' && location.pathname !== '/register' ?
                 <>
                     <NavMenu />
+                    {console.log(children)}
                     <Sidebar />
                 </>
                 :

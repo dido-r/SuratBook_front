@@ -10,6 +10,7 @@ import { SearchResults } from './components/SearchResults/SearchResults';
 import { UserGuard } from './components/Guards/UserGuard';
 import { NoUserGuard } from './components/Guards/NoUserGuard';
 import { AllGroups } from './components/Group/AllGroups/AllGroups';
+import { NotFound } from './components/Guards/NotFound';
 
 export function AppRoutes() {
 
@@ -29,6 +30,7 @@ export function AppRoutes() {
                 <Route path="/groups/create-group" element={<CreateGroup />} />
                 <Route path="/search/:place" element={<SearchResults />} />
             </Route>
+            <Route path="*" element={<NotFound />} />
         </Routes>
     );
 }
