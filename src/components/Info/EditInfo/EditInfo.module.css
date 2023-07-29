@@ -44,3 +44,9 @@ button {
     text-decoration: none;
     cursor: pointer;
 }
+
+.error-msg{
+    text-align: center;
+    color: red;
+    margin-bottom: 10px;
+}

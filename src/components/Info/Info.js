@@ -32,17 +32,17 @@ export function Info() {
                 </div>
                 <div className={`${styles['user-info']} text-light`}>
                     <ul>
-                        <li>{info.town === null  ? 'No info yet...' : info.town}</li>
-                        <li>{info.address === null  ? 'No info yet...' : info.address}</li>
-                        <li>{info.country === null  ? 'No info yet...' : info.country}</li>
-                        <li>{info.university === null ? 'No info yet...' : info.university}</li>
+                        <li>{info.town === null || info.town === '' ? 'No info yet...' : info.town}</li>
+                        <li>{info.address === null || info.address === ''  ? 'No info yet...' : info.address}</li>
+                        <li>{info.country === null || info.country === ''  ? 'No info yet...' : info.country}</li>
+                        <li>{info.university === null || info.university === '' ? 'No info yet...' : info.university}</li>
                         <li>{info.universityDegree === null || info.universityDegree === '' ? 'No info yet...' : info.universityDegree}</li>
-                        <li>{info.school === null  ? 'No info yet...' : info.school}</li>
+                        <li>{info.school === null || info.school === ''  ? 'No info yet...' : info.school}</li>
                     </ul>
                 </div>
                 {user.userId === params.id ? <button className={`${styles['edit-info-btn']} btn btn-outline-light`} onClick={() => { setEdit(true) }}>Edit</button> : null}
             </div>
             :
-            <EditInfo params={params} setEdit={setEdit} setInfo={setInfo}/>)
+            <EditInfo info={info} setEdit={setEdit} setInfo={setInfo}/>)
     );
 }

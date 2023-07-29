@@ -20,16 +20,8 @@ export function Login() {
 
         e.preventDefault();
         setError(null);
-
-        try {
-
-            var result = await request('post', 'api/user/login', values);
-            result.data === 'Successful login' ? navigate("/") : setError('Invalid credentials');
-
-        } catch (error) {
-
-            setError('Invalid credentials');
-        }
+        var result = await request('post', 'api/user/login', values);
+        result.data === 'Successful login' ? navigate("/") : setError('Invalid credentials');
     }
 
     return (
@@ -43,8 +35,8 @@ export function Login() {
                             {error}
                         </div> : null}
                         <form className={styles['login-form']} onSubmit={(e) => onLoginSubmit(e)}>
-                            <div><input className={styles['login-input']} type="email" placeholder="Email" name="email" value={values.email} onChange={(e) => onChangeHandler(e)} /></div>
-                            <div><input className={styles['login-input']} type="password" placeholder="Password" name="pass" value={values.pass} onChange={(e) => onChangeHandler(e)} /></div>
+                            <div><input className={styles['login-input']} required="required" type="email" placeholder="Email" name="email" value={values.email} onChange={(e) => onChangeHandler(e)} /></div>
+                            <div><input className={styles['login-input']} required="required" type="password" placeholder="Password" name="pass" value={values.pass} onChange={(e) => onChangeHandler(e)} /></div>
                             <div><button type="submit">Sign in</button></div>
                         </form>
                         <footer>Don't have a SURAT? <Link className={styles['login-a']} to="/register">Sign up here</Link></footer>

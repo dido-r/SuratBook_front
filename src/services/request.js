@@ -45,37 +45,7 @@ export async function request(method, path, obj, mimeType) {
 
             } catch (err) {
 
-                throw new Error();
-            }
-        case 'put':
-            try {
-                let response = await axios.put(host + path, obj, options);
-
-                if (response.ok === false) {
-
-                    throw new Error();
-                }
-
-                return response;
-
-            } catch (err) {
-
-                throw new Error();
-            }
-        case 'delete':
-            try {
-                let response = await axios.delete(host + path, options);
-
-                if (response.ok === false) {
-
-                    throw new Error();
-                }
-
-                return response;
-
-            } catch (err) {
-
-                throw new Error();
+                return err;
             }
             default: break;
       }
