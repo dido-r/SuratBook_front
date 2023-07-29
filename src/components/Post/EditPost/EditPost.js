@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from '../../../hooks/useForm';
 import { request } from '../../../services/request';
 import styles from './EditPost.module.css';
@@ -10,6 +11,7 @@ export function EditPost({
     setModal
 }) {
 
+    const [error, setError] = useState(false);
     const { values, onChangeHandler, resetValues } = useForm({
 
         id: edit.id,
@@ -19,17 +21,17 @@ export function EditPost({
     const onEditPost = async (e) => {
 
         e.preventDefault();
-        resetValues(e);
-
-        try {
-
-            await request('post', 'api/post/edit-post', values);
-            updatePosts(edit.id);
-
-        } catch {
-
-            setModal(true);
+        setError(false);
+        let response = await request('post', 'api/post/edit-post', values);
+        
+        if(response.name === "AxiosError"){
+            
+            setError(`${response.response.data.message}`);
+            return;
         }
+        
+        resetValues(e);
+        updatePosts(edit.id);
         setEdit(null);
     }
 
@@ -66,6 +68,9 @@ export function EditPost({
                     <span className={styles['close-modal']} onClick={() => onclose()}>&times;</span>
                     <form onSubmit={(e) => onEditPost(e)}>
                         <h4 className={styles['edit-h']}>Edit post</h4><hr />
+                        {error !== null ? <div className={styles['error-msg']}>
+                            {error}
+                        </div> : null}
                         <textarea className={styles['edit-ta']} required="required" name="description" rows="3" placeholder={edit.value} value={values.description} onChange={(e) => onChangeHandler(e)} />
                         <button className={`${styles['post-edit-btn']} btn btn-outline-light`}>Submit</button>
                     </form>
