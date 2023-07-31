@@ -6,8 +6,8 @@ import { useState } from 'react';
 import { PostImage } from "./PostImage/PostImage";
 import { EditPost } from "./EditPost/EditPost";
 import { request } from "../../services/request";
-import { Modal } from "../Modal/Modal";
 import { useCurrentUser } from '../../hooks/useCookies';
+import { PostDelete } from "./PostDelete/PostDelete";
 
 export function Post({
     posts,
@@ -16,25 +16,12 @@ export function Post({
 
     const [showComment, setShowComment] = useState(false);
     const [edit, setEdit] = useState(null);
-    const [modal, setModal] = useState(false);
+    const [confirmDelete, setConfirmDelete] = useState(undefined);
     const [comments, setComments] = useState([]);
     const currentUser = useCurrentUser()
 
-    const onPostDelete = async (id) => {
-
-        try {
-
-            await request('post', `api/post/delete-post?postId=${id}`);
-            setPosts((current) => current.filter(x => x.key !== id));
-
-        } catch(error) {
-            
-            setModal(true);
-        }
-    }
-
     const onPostLike = async (id) => {
-        
+
         await request('post', `api/post/like?postId=${id}`);
         setPosts(current => current.map(x => x.key === id ? ({ ...x, likes: x.likes + 1, isLiked: true }) : x));
     }
@@ -48,8 +35,8 @@ export function Post({
 
     return (
         <>
-            {edit ? <EditPost setModal={setModal} setEdit={setEdit} edit={edit} setPosts={setPosts} posts={posts} /> : null}
-            {modal ? <Modal message='Something went wrong' setModal={setModal} /> : null}
+            {edit ? <EditPost setEdit={setEdit} edit={edit} setPosts={setPosts} posts={posts} /> : null}
+            {confirmDelete !== undefined ? <PostDelete postId={confirmDelete} setPosts={setPosts} setConfirmDelete={setConfirmDelete} /> : null}
             {posts.length === 0 ?
                 <h4 className='text-light text-center'>No posts yet</h4>
                 :
@@ -75,14 +62,14 @@ export function Post({
                                 :
                                 <>
                                     <button onClick={() => setEdit({ id: x.key, value: x.description })} className="btn btn-outline-light">Edit</button>
-                                    <button onClick={() => onPostDelete(x.key)} className="btn btn-outline-light">Delete</button>
+                                    <button onClick={() => setConfirmDelete(x.key)} className="btn btn-outline-light">Delete</button>
                                 </>}
                         </div>
-
+                                    
                         {showComment === x.key ?
                             <div>
-                                <CreateComment location='post' pic={x} setComments={setComments}/>
-                                <Comment comments={comments}/>
+                                <CreateComment location='post' pic={x} setComments={setComments} />
+                                <Comment comments={comments} />
                             </div>
                             :
                             null

@@ -23,3 +23,8 @@
 .create-comment {
     margin-bottom: 20px;
 }
+
+.error-msg{
+    text-align: center;
+    color: red;
+}

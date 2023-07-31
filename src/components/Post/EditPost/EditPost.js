@@ -7,8 +7,7 @@ export function EditPost({
     setEdit,
     edit,
     setPosts,
-    posts,
-    setModal
+    posts
 }) {
 
     const [error, setError] = useState(false);
@@ -58,7 +57,6 @@ export function EditPost({
     const onclose = () => {
 
         setEdit(null);
-        setModal(false);
     }
 
     return (

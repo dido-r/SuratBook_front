@@ -47,6 +47,6 @@ button {
 
 .error-msg{
     text-align: center;
-    color: red;
+    color: rgb(183, 0, 0);
     margin-bottom: 10px;
 }

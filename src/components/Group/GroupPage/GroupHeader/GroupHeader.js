@@ -83,7 +83,7 @@ export function GroupHeader({
                             <h5 className={`${styles['pofile-tags']} ${active === 'post' ? styles['active-tag'] : null}`}>Posts</h5>
                         </li>
                         <li onClick={() => { configure('photos') }} className={styles['pofile-list']}>
-                            <h5 className={`${styles['pofile-tags']} ${active === 'photos' ? styles['active-tag'] : null}`}>Photos</h5>
+                            <h5 className={`${styles['pofile-tags']} ${active === 'photos' ? styles['active-tag'] : null}`}>Media</h5>
                         </li>
                         <li onClick={() => { configure('members') }} className={styles['pofile-list']}>
                             <h5 className={`${styles['pofile-tags']} ${active === 'members' ? styles['active-tag'] : null}`}>Members</h5>

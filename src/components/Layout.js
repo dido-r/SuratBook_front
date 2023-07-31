@@ -8,7 +8,7 @@ export function Layout({ children }) {
 
     return (
         <div>
-            {location.pathname !== '/login' && location.pathname !== '/register'  && location.key !== 'default' ?
+            {location.pathname !== '/login' && location.pathname !== '/register' ?
                 <>
                     <NavMenu />
                     <Sidebar />

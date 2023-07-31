@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import styles from './UploadPhoto.module.css';
-import { Modal } from '../../Modal/Modal';
-import { useForm } from '../../../hooks/useForm';
 import { useDropBox } from '../../../hooks/useDropbox';
 import { useCurrentUser } from '../../../hooks/useCookies';
 import { request } from '../../../services/request';
@@ -11,19 +9,19 @@ export function UploadPhoto({
     setPhotos
 }) {
 
-    const { resetValues } = useForm(null);
     const { uploadFile } = useDropBox();
     const user = useCurrentUser();
     const [source, setSource] = useState(null);
-    const [modal, setModal] = useState(false);
+    const [error, setError] = useState(undefined);
 
     const onUploadSubmit = async (e) => {
+
         e.preventDefault();
 
         try {
 
             let file = e.target.getElementsByTagName('input')[0].files[0];
-
+           
             if (file !== undefined) {
 
                 let img = await uploadFile(file);
@@ -31,31 +29,42 @@ export function UploadPhoto({
                 let isExisting = await request('get', `api/photo/exist?path=${dropboxPath}`);
 
                 if (!isExisting.data) {
+
                     let dropboxId = img.id;
                     let ownerId = user.userId;
                     let photoId = await request('post', 'api/photo/upload', { dropboxPath, dropboxId, ownerId });
-                    let newPhoto = {
-                        key: photoId,
-                        dropboxPath,
-                        dropboxId,
-                        ownerId
-                    }
-                    setPhotos(current => [newPhoto, ...current]);
-                    onCloseModal();
-                    resetValues(e);
-                    
-                }else{
 
-                    setModal(true);
+                    if (photoId.name === 'AxiosError') {
+
+                        setError(`${photoId.response.data.message}`);
+                    } else {
+
+                        let newPhoto = {
+                            key: photoId.data,
+                            dropboxPath,
+                            dropboxId,
+                            ownerId,
+                            likes: 0,
+                            comments: 0
+                        }
+                        
+                        setPhotos(current => [newPhoto, ...current]);
+                        onCloseModal();
+                    }
+                } else {
+
+                    setError('You have already uploaded this photo');
                 }
+            }
+            else {
+
+                setError('Please select photo');
             }
 
         } catch (error) {
 
-            setModal(true);
+            setError('Could not upload the photo');
         }
-
-        onCloseModal();
     }
 
     const onCloseModal = () => {
@@ -72,13 +81,13 @@ export function UploadPhoto({
 
     return (
         <>
-            {modal ? <Modal message='Something went wrong or the file already exist.' setModal={setModal} /> : null}
             <div className={styles['modal-background']}>
                 <div className={`${styles['home-card']} card bg-dark bg-gradient`}>
                     <span className={styles['close-modal']} onClick={onCloseModal}>&times;</span>
                     <div className="card-body">
                         <form onSubmit={(e) => onUploadSubmit(e)}>
                             <h4 className={styles['create-h']}>Upload photo</h4><hr />
+                            {error !== undefined ? <div className={styles['error-msg']}>{error}</div> : null}
                             {source !== null ? <img className={styles['img-previw']} src={source} alt="img" /> : null}
                             <input onChange={(e) => showPreview(e)} className={styles['create-file']} type="file" /><br />
                             <button className={`${styles['post-create-btn']} btn btn-outline-light`}>Upload</button>

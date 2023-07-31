@@ -1,8 +1,9 @@
 .info-container {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     border-radius: 10px;
     width: 60%;
+    padding: 20px;
     margin: 0 auto 2rem auto;
 }
 

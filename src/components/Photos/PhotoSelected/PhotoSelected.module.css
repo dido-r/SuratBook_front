@@ -51,7 +51,7 @@
 }
 
 .comment-section{
-    flex: 0 0 40%;
+    flex: 0 0 35%;
     padding-left: 20px;
     overflow-y: auto;
     height: 480px;
@@ -59,4 +59,12 @@
 
 .post-descr{
     white-space: break-spaces;
+}
+
+.error-msg{
+    text-align: center;
+    color: rgb(183, 0, 0);
+    margin-bottom: 10px;
+    display: inline;
+    margin-right: 15px;
 }

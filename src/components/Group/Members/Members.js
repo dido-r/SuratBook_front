@@ -36,6 +36,6 @@ export function Members({
                     </Link>
                 </section>
             </div>
-        )) : null
+        )) : <h4 className='text-light text-center'>No members</h4>
     );
 }

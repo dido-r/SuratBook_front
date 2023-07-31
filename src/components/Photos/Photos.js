@@ -35,9 +35,11 @@ export function Photos({
                 {user.userId === params.id ? <button onClick={() => setUpload(true)} className={`${styles['add-photo-btn']} btn btn-outline-light`}>Upload photo</button> : null}
             </div>
             {modal ? <Modal message={'Could not load photos.'} setModal={setModal} /> : null}
-            {upload ? <UploadPhoto setUpload={setUpload} setPhotos={setPhotos}/> : null}
-            <div className={styles['images-container']}>
-                {photos.map(x => <Photo location={location} key={x.key} setPhotos={setPhotos} pic={x}/>)}
-            </div>
+            {upload ? <UploadPhoto setUpload={setUpload} setPhotos={setPhotos} /> : null}
+            {photos.length === 0 ?
+                <h4 className='text-light text-center'>No photos</h4> :
+                <div className={styles['images-container']}>
+                    {photos.map(x => <Photo location={location} key={x.key} setPhotos={setPhotos} pic={x} />)}
+                </div>}
         </>);
 }

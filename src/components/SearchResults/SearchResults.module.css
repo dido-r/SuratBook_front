@@ -13,3 +13,28 @@
     cursor: pointer;
     text-decoration: none;
 }
+
+.no-results {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #707070;
+}
+
+.no-results img {
+    width: 250px;
+}
+
+.no-results div {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.no-results-text h1 {
+    font-size: 4rem;
+}
+
+.no-results-text h5 {
+    font-size: 2rem;
+}
