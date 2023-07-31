@@ -8,38 +8,34 @@ import { request } from '../../services/request';
 export function Home() {
 
     const limit = 5;
-    let offset = 0;
+    const [offset, setOffset] = useState(0);
     const [posts, setPosts] = useState([]);
+    const [end, setEnd] = useState(false);
 
     useEffect(() => {
 
-        request('get', 'api/post/get-all-posts').then(x => setPosts(x.data));
-    }, []);
+        request('get', `api/post/get-all-posts?offset=${offset}&limit=${limit}`).then(x => {
 
-    const handleScroll = (e) => {
+            if (x.data.length < limit) {
 
-        console.log('yes')
-        const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
-
-        if (bottom) {
-
-            console.log('scroll');
-        }
-    }
+                setEnd(true)
+            }
+            setPosts(current => ([...current, ...x.data]))
+        });
+    }, [offset]);
 
     return (
-        <>
-            <div className="d-flex" onScroll={(e) => handleScroll(e)}>
-                <div className={styles['card-container']} onScroll={(e) => handleScroll(e)}>
 
-                    <CreatePost location={'home'} posts={posts} setPosts={setPosts} />
-                    <Post posts={posts} setPosts={setPosts} onScroll={(e) => handleScroll(e)}/>
+        <div className="d-flex" >
+            <div className={styles['card-container']}>
 
-                </div>
-                <div className={`${styles['onl-fr-sc']}`}>
-                    <FriendsOnline />
-                </div>
+                <CreatePost location={'home'} posts={posts} setPosts={setPosts} />
+                <Post posts={posts} setPosts={setPosts} />
+                {!end ? <button onClick={() => setOffset(x => x + limit)} className={`${styles['load-more']} btn btn-outline-light`}>Load more</button> : null}
             </div>
-        </>
+            <div className={styles['onl-fr-sc']}>
+                <FriendsOnline />
+            </div>
+        </div>
     );
 }

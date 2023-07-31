@@ -14,3 +14,8 @@
 .onl-fr-sc{
     width: 20%;
 }
+
+.load-more {
+    position:relative;
+    left:50%;
+}
