@@ -26,7 +26,7 @@ export function GroupInfo({
                         <li>{groupData.groupInfo}</li>
                     </ul>
                 </div>
-                {user.userId.toUpperCase() === groupData.ownerId ? <button className={`${styles['edit-info-btn']} btn btn-outline-light`} onClick={() => { setEdit(true) }}>Edit</button> : null}
+                {user.userId === groupData.ownerId ? <button className={`${styles['edit-info-btn']} btn btn-outline-light`} onClick={() => { setEdit(true) }}>Edit</button> : null}
             </div>
             :
             <EditGroupInfo user={user} groupData={groupData} setGroupData={setGroupData} setEdit={setEdit} />)

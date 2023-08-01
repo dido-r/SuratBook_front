@@ -69,7 +69,7 @@ export function GroupHeader({
                     <img className={styles['collection-hero-image']} src="" alt="" />
                     <h2 className={styles['pofile-username']}>{groupData.name}</h2>
 
-                    {user.userId.toUpperCase() === groupData.ownerId ?
+                    {user.userId === groupData.ownerId ?
                         <button className="btn btn-outline-danger">Delete</button> :
                         <div className={styles['group-btn']}>
                             {isMember.isMember ? <button className="btn btn-outline-danger" onClick={() => onGroupEvent('leave')}>Leave group</button>
@@ -88,7 +88,7 @@ export function GroupHeader({
                         <li onClick={() => { configure('members') }} className={styles['pofile-list']}>
                             <h5 className={`${styles['pofile-tags']} ${active === 'members' ? styles['active-tag'] : null}`}>Members</h5>
                         </li>
-                        {user.userId.toUpperCase() === groupData.ownerId ?
+                        {user.userId === groupData.ownerId ?
                             <li onClick={() => { configure('requests') }} className={styles['pofile-list']}>
                                 <h5 className={`${styles['pofile-tags']} ${active === 'requests' ? styles['active-tag'] : null}`}>Membership requests</h5>
                             </li> : null}

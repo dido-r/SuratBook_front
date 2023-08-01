@@ -107,7 +107,7 @@ export function CreatePost({
                     </div>) : null : null}
 
             {location === 'group' ?
-                groupData.isMember || groupData.groupData.ownerId === loggedUser.userId.toUpperCase() ?
+                groupData.isMember || groupData.groupData.ownerId === loggedUser.userId ?
                     (<div className={`${styles['create-post']} card bg-dark bg-gradient`}>
                         <div className='card-body'>
                             <form onSubmit={(e) => onCreatePost(e)}>

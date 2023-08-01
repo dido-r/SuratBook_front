@@ -46,7 +46,7 @@ export function GroupPage() {
         <>
             <GroupHeader isMember={{ isMember, setIsMember }} groupData={groupData} setTag={setTag} />
             {groupData.access === 'Private' ?
-                user.userId.toUpperCase() === groupData.ownerId ? renderSwitch(tag) :
+                user.userId === groupData.ownerId ? renderSwitch(tag) :
                     isMember ? renderSwitch(tag) : <h5 className="text-light text-center">Only members can view this section</h5> : renderSwitch(tag)}
         </>
     );
