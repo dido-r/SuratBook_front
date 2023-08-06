@@ -5,15 +5,19 @@ import { request } from '../../../services/request';
 
 
 export function Requests({
-    groupData
+    groupData,
+    setLoading
 }) {
 
     const [pending, setPending] = useState([]);
 
     useEffect(() => {
-
-        request('get', `api/group/pending-requests?groupId=${groupData.id}`).then(x => setPending(x.data));
-    }, [groupData.id]);
+        setLoading(true);
+        request('get', `api/group/pending-requests?groupId=${groupData.id}`).then(x => {
+            setPending(x.data);
+            setLoading(false);
+        });
+    }, [groupData.id, setLoading]);
 
     const approveJoin = async (requestId) => {
 

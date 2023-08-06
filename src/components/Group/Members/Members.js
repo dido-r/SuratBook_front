@@ -4,21 +4,26 @@ import { Link } from 'react-router-dom'
 import { request } from '../../../services/request';
 
 export function Members({
-    groupId
+    groupId,
+    setLoading
 }) {
 
     const [members, setMembers] = useState([]);
 
     useEffect(() => {
 
+        setLoading(true);
         try {
 
-            request('get', `api/group/get-members?groupId=${groupId}`).then(x => setMembers(x.data))
+            request('get', `api/group/get-members?groupId=${groupId}`).then(x => {
+                setMembers(x.data);
+                setLoading(false);
+            });
         } catch {
 
 
         }
-    }, [groupId]);
+    }, [groupId, setLoading]);
 
     return (
 

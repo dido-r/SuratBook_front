@@ -3,10 +3,12 @@ import styles from './UserList.module.css';
 import { Suggestions } from './Suggestions/Suggestions';
 import { SentRequests } from './SentRequests/SentRequests';
 import { Invitations } from './Invitations/Invitations';
+import { Spinner } from '../Spinner/Spinner';
 
 export function UserList() {
 
     const [active, setActive] = useState('all');
+    const [loading, setLoading] = useState(true);
 
     const configure = (param) => {
 
@@ -16,13 +18,13 @@ export function UserList() {
     const renderSwitch = (tag) => {
         switch (tag) {
             case 'all':
-                return <Suggestions/>;
+                return <Suggestions setLoading={setLoading}/>;
             case 'sent':
-                return <SentRequests/>;
+                return <SentRequests setLoading={setLoading}/>;
             case 'request':
-                return <Invitations/>;
+                return <Invitations setLoading={setLoading}/>;
             default:
-                return <Suggestions/>;
+                return <Suggestions setLoading={setLoading}/>;
         }
     }
 
@@ -39,6 +41,7 @@ export function UserList() {
                     <h5 className={`${styles['pofile-tags']} ${active === 'request' ? styles['active-tag'] : null}`}>Friend requests</h5>
                 </li>
             </ul>
+            {loading ? <Spinner /> : null}
             {renderSwitch(active)}
         </>
     );

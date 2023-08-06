@@ -3,21 +3,27 @@ import { request } from '../../../services/request';
 import styles from './Suggestions.module.css';
 import { Link } from "react-router-dom";
 
-export function Suggestions() {
+export function Suggestions({
+    setLoading
+}) {
 
     const [suggestions, setSuggestions] = useState([]);
 
     useEffect(() => {
-
-        request('get', 'api/friend/all').then(x => setSuggestions(x.data))
-    }, []);
+        
+        setLoading(true);
+        request('get', 'api/friend/all').then(x => {
+            setSuggestions(x.data);
+            setLoading(false);
+        });
+    }, [setLoading]);
 
     const addAsFriend = async (id) => {
 
-        try{
+        try {
 
             await request('post', `api/friend/add?friendId=${id}`)
-        }catch{
+        } catch {
 
         }
         setSuggestions(current => current.filter(x => x.id !== id));

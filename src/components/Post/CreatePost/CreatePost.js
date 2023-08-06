@@ -24,7 +24,6 @@ export function CreatePost({
         groupId: groupData ? groupData.groupData.id : null
     });
 
-
     const onCreatePost = async (e) => {
 
         e.preventDefault();

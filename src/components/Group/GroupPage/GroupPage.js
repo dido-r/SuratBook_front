@@ -9,6 +9,7 @@ import { CreatePost } from '../../Post/CreatePost/CreatePost';
 import { Members } from "../Members/Members";
 import { useCurrentUser } from "../../../hooks/useCookies";
 import { Requests } from "../JoinRequests/Requests";
+import { Spinner } from "../../Spinner/Spinner";
 
 export function GroupPage() {
 
@@ -16,35 +17,40 @@ export function GroupPage() {
     const [posts, setPosts] = useState([]);
     const [groupData, setGroupData] = useState({});
     const [isMember, setIsMember] = useState(false);
+    const [loading, setLoading] = useState(true);
     const params = useParams();
     const user = useCurrentUser();
 
     useEffect(() => {
         request('get', `api/group/membership?groupId=${params.id}`).then(x => setIsMember(x.data));
         request('get', `api/group/data?groupId=${params.id}`).then(x => setGroupData(x.data));
-        request('get', `api/group/posts?groupId=${params.id}`).then(x => setPosts(x.data));
+        request('get', `api/group/posts?groupId=${params.id}`).then(x => {
+            setPosts(x.data);
+            setLoading(false);
+        });
     }, [params.id]);
 
     const renderSwitch = (tag) => {
         switch (tag) {
             case 'post':
-                return <><CreatePost location={'group'} groupData={{ groupData, isMember }} user={null} setPosts={setPosts} /><Post posts={posts} setPosts={setPosts} /></>;
+                return <><CreatePost location={'group'} groupData={{ groupData, isMember }} user={null} setPosts={setPosts} /><Post posts={posts} setPosts={setPosts}/></>;
             case 'photos':
                 return <Photos location='group' />;
             case 'members':
-                return <Members groupId={groupData.id} />;
+                return <Members groupId={groupData.id} setLoading={setLoading}/>;
             case 'info':
                 return <GroupInfo groupData={groupData} setGroupData={setGroupData} />;
             case 'requests':
-                return <Requests groupData={groupData}/>;
+                return <Requests groupData={groupData} setLoading={setLoading}/>;
             default:
-                return <Post />;
+                return <Post posts={posts} setPosts={setPosts}/>;
         }
     }
 
     return (
         <>
             <GroupHeader isMember={{ isMember, setIsMember }} groupData={groupData} setTag={setTag} />
+            {loading ? <Spinner /> : null}
             {groupData.access === 'Private' ?
                 user.userId === groupData.ownerId ? renderSwitch(tag) :
                     isMember ? renderSwitch(tag) : <h5 className="text-light text-center">Only members can view this section</h5> : renderSwitch(tag)}

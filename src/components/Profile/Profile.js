@@ -9,6 +9,7 @@ import { GroupList } from "../Group/ListOfGroups/GroupList";
 import { useParams } from "react-router-dom";
 import { CreatePost } from "../Post/CreatePost/CreatePost";
 import { Friends } from '../Friends/Friends';
+import { Spinner } from '../Spinner/Spinner';
 import styles from './Profile.module.css';
 
 export function Profile() {
@@ -21,6 +22,7 @@ export function Profile() {
     const [myPosts, setMyPosts] = useState([]);
     const [user, setUser] = useState({});
     const [end, setEnd] = useState(false);
+    const [loading, setLoading] = useState(true);
     const param = useParams()
 
     useEffect(() => {
@@ -31,10 +33,11 @@ export function Profile() {
             request('get', `api/post/get-my-posts?id=${param.id}&offset=${offset}&limit=${limit}`).then(x => {
 
                 if (x.data.length < limit) {
-    
+
                     setEnd(true)
                 }
-                setMyPosts(current => ([...current, ...x.data]))
+                setMyPosts(current => ([...current, ...x.data]));
+                setLoading(false)
             });
 
         } catch {
@@ -49,8 +52,11 @@ export function Profile() {
             case 'post':
                 return <>
                     <CreatePost location={'profile'} user={user} setPosts={setMyPosts} />
-                    <Post posts={myPosts} setPosts={setMyPosts} />
-                    {!end ? <button onClick={() => setOffset(x => x + limit)} className={`${styles['load-more']} btn btn-outline-light`}>Load more</button> : null}
+                    {loading ? <Spinner /> :
+                        <>
+                            <Post posts={myPosts} setPosts={setMyPosts} />
+                            {!end ? <button onClick={() => setOffset(x => x + limit)} className={`${styles['load-more']} btn btn-outline-light`}>Load more</button> : null}
+                        </>}
                 </>;
             case 'photos':
                 return <Photos />;

@@ -4,6 +4,7 @@ import { Post } from '../Post/Post';
 import { FriendsOnline } from './FriendsOnline/FriendsOnline';
 import { useEffect, useState } from 'react';
 import { request } from '../../services/request';
+import { Spinner } from '../Spinner/Spinner';
 
 export function Home() {
 
@@ -11,6 +12,7 @@ export function Home() {
     const [offset, setOffset] = useState(0);
     const [posts, setPosts] = useState([]);
     const [end, setEnd] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
 
@@ -20,7 +22,8 @@ export function Home() {
 
                 setEnd(true)
             }
-            setPosts(current => ([...current, ...x.data]))
+            setPosts(current => ([...current, ...x.data]));
+            setLoading(false);
         });
     }, [offset]);
 
@@ -28,10 +31,12 @@ export function Home() {
 
         <div className="d-flex" >
             <div className={styles['card-container']}>
-
                 <CreatePost location={'home'} posts={posts} setPosts={setPosts} />
-                <Post posts={posts} setPosts={setPosts} />
-                {!end ? <button onClick={() => setOffset(x => x + limit)} className={`${styles['load-more']} btn btn-outline-light`}>Load more</button> : null}
+                {loading ? <Spinner /> :
+                    <>
+                        <Post posts={posts} setPosts={setPosts} />
+                        {!end ? <button onClick={() => setOffset(x => x + limit)} className={`${styles['load-more']} btn btn-outline-light`}>Load more</button> : null}
+                    </>}
             </div>
             <div className={styles['onl-fr-sc']}>
                 <FriendsOnline />
