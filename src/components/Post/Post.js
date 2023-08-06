@@ -8,6 +8,7 @@ import { EditPost } from "./EditPost/EditPost";
 import { request } from "../../services/request";
 import { useCurrentUser } from '../../hooks/useCookies';
 import { PostDelete } from "./PostDelete/PostDelete";
+import { PostUserImage } from "./PostUserImage/PostUserImage";
 
 export function Post({
     posts,
@@ -43,7 +44,7 @@ export function Post({
                 posts.map(x => (
                     <div key={x.key} className={`${styles['home-card']} card bg-dark bg-gradient`}>
                         <Link to={`/user/${x.ownerId}`} className={`${styles['home-card-link']} card-body`}>
-                            <img className={styles["card-user-img"]} src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" />
+                            <PostUserImage path={x.ownerImage}/>
                             <span className={`${styles['card-body-span']} text-light`}>{x.ownerName}</span>
                         </Link>
 

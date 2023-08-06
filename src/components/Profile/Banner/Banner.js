@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './Banner.module.css';
 import { useCurrentUser } from '../../../hooks/useCookies';
 import { request } from '../../../services/request';
+import { useDropBox } from '../../../hooks/useDropbox';
 
 export function Banner({
     setTag,
@@ -11,7 +12,20 @@ export function Banner({
 
     const [active, setActive] = useState('post');
     const [areFriends, setAreFriends] = useState('');
+    const [src, setSrc] = useState('https://cdn-icons-png.flaticon.com/512/149/149071.png');
     const currentUser = useCurrentUser();
+    const { getFile } = useDropBox();
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+
+            let path = await request('get', 'api/photo/get-a-profile');
+            let res = await getFile(path.data);
+            setSrc(URL.createObjectURL(res));
+        }
+        fetchData();
+    }, []);
 
     const checkFriendship = () => {
 
@@ -58,7 +72,7 @@ export function Banner({
     return (
         <div className={styles['collection-hero']}>
             <div className={styles['collection-container']}>
-                <img className={styles['profile-img']} src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" />
+                <img className={styles['profile-img']} src={src} alt="img" />
                 <h2 className={styles['pofile-username']}>{user.name}</h2>
 
                 {currentUser.userId !== user.id ? 

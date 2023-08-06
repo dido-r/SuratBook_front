@@ -32,6 +32,12 @@ export function PhotoSelected({
         setPhotos(current => current.map(x => x.key === photoId ? ({ ...x, likes: x.likes + 1, isLiked: true }) : x));
     }
 
+    const onSetAsProfile = async (dropboxPath) => {
+
+        await request('post', 'api/photo/set-as-profile', dropboxPath);
+        setSelected(false);
+    }
+
     const onPhotoDelete = async (photo) => {
 
         let id = photo.id;
@@ -64,7 +70,10 @@ export function PhotoSelected({
                             </div> : null}
                             {currentUser.userId !== pic.ownerId.toLowerCase() ?
                                 !pic.isLiked ? <button className="btn btn-outline-light" onClick={() => onPhotoLike(pic.key)}>Like</button> : null :
-                                <button className={'btn btn-outline-danger'} onClick={() => onPhotoDelete({ id: pic.key, filePath: pic.dropboxPath })}>Delete</button>}
+                                <>
+                                <button className={'btn btn-outline-danger'} onClick={() => onPhotoDelete({ id: pic.key, filePath: pic.dropboxPath })}>Delete</button>
+                                <button className={'btn btn-outline-light'} onClick={() => onSetAsProfile(pic.dropboxPath)}>Set as profile</button>
+                                </>}
                         </div>
                     </div>
                     <div className={styles['comment-section']}>

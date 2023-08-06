@@ -1,16 +1,35 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './NavMenu.css';
 import axios from 'axios';
 import { useCurrentUser } from '../../hooks/useCookies';
 import { useForm } from '../../hooks/useForm';
 import { request } from '../../services/request';
+import { useDropBox } from '../../hooks/useDropbox';
 
 export function NavMenu() {
 
+    const [src, setSrc] = useState('https://cdn-icons-png.flaticon.com/512/149/149071.png');
     const [dropdown, setDropdown] = useState(false);
     const navigate = useNavigate();
     const user = useCurrentUser();
+    const { getFile } = useDropBox();
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+
+            let path = await request('get', 'api/photo/get-a-profile');
+
+            if(path.data === null){
+
+                return;
+            }
+            let res = await getFile(path.data);
+            setSrc(URL.createObjectURL(res));
+        }
+        fetchData();
+    }, []);
 
     const { values, onChangeHandler, resetValues } = useForm({
 
@@ -32,22 +51,22 @@ export function NavMenu() {
 
         e.preventDefault();
 
-        if(values.place === 'users'){
+        if (values.place === 'users') {
 
             let response = await request('get', `api/user/search?name=${values.searchTerm}`);
-            navigate(`/search/${values.place}`, {state: response.data});
+            navigate(`/search/${values.place}`, { state: response.data });
         }
 
-        if(values.place === 'groups'){
+        if (values.place === 'groups') {
 
             let response = await request('get', `api/group/search?name=${values.searchTerm}`);
-            navigate(`/search/${values.place}`, {state: response.data});
+            navigate(`/search/${values.place}`, { state: response.data });
         }
 
-        if(values.place === 'posts'){
+        if (values.place === 'posts') {
 
             let response = await request('get', `api/post/search?name=${values.searchTerm}`);
-            navigate(`/search/${values.place}`, {state: response.data});
+            navigate(`/search/${values.place}`, { state: response.data });
         }
 
         resetValues(e);
@@ -59,11 +78,10 @@ export function NavMenu() {
                 <div className="container-fluid">
                     <Link to="/" className="navbar-brand">SuratBook</Link>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <img className="card-user-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt='img' />
+                        <img className="card-user-img" src={src} alt='img' />
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item dropdown text-light">
                                 <span className="nav-link dropdown-toggle" onClick={() => setDropdown(!dropdown)}>
-                                    {user.userName}
                                 </span>
                                 {dropdown ?
                                     <ul className="dropmenu dark">
