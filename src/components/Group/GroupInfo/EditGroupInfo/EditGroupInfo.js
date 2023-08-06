@@ -1,6 +1,5 @@
 import styles from './EditGroupInfo.module.css';
 import { useForm } from '../../../../hooks/useForm';
-import { useParams } from 'react-router-dom';
 import { request } from '../../../../services/request';
 import { useState } from 'react';
 
@@ -10,10 +9,9 @@ export function EditGroupInfo({
     groupData
 }) {
 
-    const params = useParams();
     const [error, setError] = useState(undefined);
     const { values, onChangeHandler, resetValues } = useForm({
-        id: params.id,
+        id: groupData.id,
         name: groupData.name,
         groupInfo: groupData.groupInfo
     });

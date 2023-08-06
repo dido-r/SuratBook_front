@@ -5,25 +5,35 @@ import { request } from '../../services/request';
 import { useParams } from 'react-router-dom';
 import { useCurrentUser } from '../../hooks/useCookies';
 import { Spinner } from '../Spinner/Spinner';
+import { Modal } from '../Modal/Modal';
 
 export function Info() {
 
     const [edit, setEdit] = useState(false);
     const [loading, setLoading] = useState(true);
     const [info, setInfo] = useState({});
+    const [modal, setModal] = useState(false);
     const params = useParams();
     const user = useCurrentUser()
 
     useEffect(() => {
 
-        request('get', `api/user/info?userId=${params.id}`).then(x => {
-            setInfo(x.data);
-            setLoading(false);
-        });
+        try{
+
+            request('get', `api/user/info?userId=${params.id}`).then(x => {
+                setInfo(x.data);
+                setLoading(false);
+            });
+        }catch{
+            
+            setModal(true);
+        }
     }, [params])
 
     return (
-        (!edit ?
+        <>
+            {modal ? <Modal setModal={setModal} message='Something went wrong'/> : null}
+            {!edit ?
             <div className={`${styles['info-container']} bg-dark bg-gradient`}>
                 <div className={styles['main-info']}>
                     <ul>
@@ -49,6 +59,7 @@ export function Info() {
                 {user.userId === params.id ? <button className={`${styles['edit-info-btn']} btn btn-outline-light`} onClick={() => { setEdit(true) }}>Edit</button> : null}
             </div>
             :
-            <EditInfo info={info} setEdit={setEdit} setInfo={setInfo} />)
+            <EditInfo info={info} setEdit={setEdit} setInfo={setInfo} />}
+        </>
     );
 }

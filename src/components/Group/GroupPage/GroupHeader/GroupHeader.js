@@ -7,8 +7,7 @@ import { Modal } from '../../../Modal/Modal';
 export function GroupHeader({
     setTag,
     groupData,
-    isMember,
-    setIsMember
+    isMember
 }) {
 
     const [active, setActive] = useState('post');

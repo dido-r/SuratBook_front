@@ -10,6 +10,7 @@ import { Members } from "../Members/Members";
 import { useCurrentUser } from "../../../hooks/useCookies";
 import { Requests } from "../JoinRequests/Requests";
 import { Spinner } from "../../Spinner/Spinner";
+import { Modal } from "../../Modal/Modal";
 
 export function GroupPage() {
 
@@ -18,16 +19,23 @@ export function GroupPage() {
     const [groupData, setGroupData] = useState({});
     const [isMember, setIsMember] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [modal, setModal] = useState(false);
     const params = useParams();
     const user = useCurrentUser();
 
     useEffect(() => {
-        request('get', `api/group/membership?groupId=${params.id}`).then(x => setIsMember(x.data));
-        request('get', `api/group/data?groupId=${params.id}`).then(x => setGroupData(x.data));
-        request('get', `api/group/posts?groupId=${params.id}`).then(x => {
-            setPosts(x.data);
-            setLoading(false);
-        });
+        try{
+
+            request('get', `api/group/membership?groupId=${params.id}`).then(x => setIsMember(x.data));
+            request('get', `api/group/data?groupId=${params.id}`).then(x => setGroupData(x.data));
+            request('get', `api/group/posts?groupId=${params.id}`).then(x => {
+                setPosts(x.data);
+                setLoading(false);
+            });
+        }catch{
+
+            setModal(true);
+        }
     }, [params.id]);
 
     const renderSwitch = (tag) => {
@@ -49,6 +57,7 @@ export function GroupPage() {
 
     return (
         <>
+            {modal ? <Modal setModal={setModal} message='Something went wrong'/> : null}
             <GroupHeader isMember={{ isMember, setIsMember }} groupData={groupData} setTag={setTag} />
             {loading ? <Spinner /> : null}
             {groupData.access === 'Private' ?
