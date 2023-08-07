@@ -59,13 +59,14 @@ export function CreatePost({
     const updatePosts = (result) => {
 
         const newPost = {
-            key: result.data,
+            key: result.data.id,
             description: values.description,
             dropboxPath: values.dropboxPath,
             likes: 0,
             comments: 0,
             ownerId: loggedUser.userId,
-            ownerName: loggedUser.userName
+            ownerName: loggedUser.userName,
+            ownerImage: result.data.ownerImage
         };
 
         setPosts(current => [newPost, ...current]);

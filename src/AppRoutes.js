@@ -11,6 +11,7 @@ import { UserGuard } from './components/Guards/UserGuard';
 import { NoUserGuard } from './components/Guards/NoUserGuard';
 import { AllGroups } from './components/Group/AllGroups/AllGroups';
 import { NotFound } from './components/Guards/NotFound';
+import { AllPosts } from './components/Admin/AllPosts/AllPosts';
 
 export function AppRoutes() {
 
@@ -29,6 +30,7 @@ export function AppRoutes() {
                 <Route path="/users" element={<UserList />} />
                 <Route path="/groups/create-group" element={<CreateGroup />} />
                 <Route path="/search/:place" element={<SearchResults />} />
+                <Route path="/admin/all-users" element={<AllPosts />} />
             </Route>
             <Route path="*" element={<NotFound />} />
         </Routes>

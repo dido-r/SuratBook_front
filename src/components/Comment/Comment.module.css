@@ -10,12 +10,6 @@
     line-height: 30%;
 }
 
-.card-user-comment-img {
-    width: 35px;
-    height: auto;
-    margin-right: 10px;
-}
-
 .comment{
     display: flex;
     margin-left: 10px;

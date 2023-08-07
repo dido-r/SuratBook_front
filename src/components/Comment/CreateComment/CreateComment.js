@@ -6,7 +6,8 @@ import { useState } from 'react';
 export function CreateComment({
     pic,
     location,
-    setComments
+    setComments,
+    data
 }) {
 
     const [error, setError] = useState(undefined);
@@ -20,7 +21,7 @@ export function CreateComment({
 
         e.preventDefault();
         setError(undefined);
-        const uri = location === 'photo' ? 'api/photo/comment' : 'api/post/comment';
+        const uri = location === 'photo' ? 'api/comment/comment-photo' : 'api/comment/comment-post';
         let response = await request('post', uri, values);
 
         if (response.name === "AxiosError") {
@@ -34,8 +35,11 @@ export function CreateComment({
                 content: response.data.content,
                 ownerId: response.data.ownerId,
                 ownerName: response.data.ownerName,
+                ownerImage: response.data.ownerImage,
             }
+            
             setComments(current => [newComment, ...current]);
+            data(current => current.map(x => x.key === pic.key ? ({ ...x, comments: x.comments + 1}) : x));
             resetValues(e);
         }
     }

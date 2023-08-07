@@ -20,13 +20,12 @@ export function NavMenu() {
         const fetchData = async () => {
 
             let path = await request('get', 'api/photo/get-a-profile');
+            
+            if (path.data !== null && path.data !== undefined && path.data !== '') {
 
-            if(path.data === null){
-
-                return;
+                let res = await getFile(path.data);
+                setSrc(URL.createObjectURL(res));
             }
-            let res = await getFile(path.data);
-            setSrc(URL.createObjectURL(res));
         }
         fetchData();
     }, []);
@@ -39,10 +38,7 @@ export function NavMenu() {
 
     const signOut = async () => {
 
-        await axios.post('https://localhost:7062/api/user/logout', {}, {
-            withCredentials: true
-        });
-
+        await request('post', 'api/user/logout');
         setDropdown(!dropdown);
         navigate("/login");
     }

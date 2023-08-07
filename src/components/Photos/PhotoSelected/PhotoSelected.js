@@ -23,7 +23,7 @@ export function PhotoSelected({
     }
 
     useEffect(() => {
-        request('get', `api/photo/get-comments?photoId=${pic.key.toLowerCase()}`).then(x => setComments(x.data));
+        request('get', `api/comment/get-photo-comments?photoId=${pic.key.toLowerCase()}`).then(x => setComments(x.data));
     }, [pic.key]);
 
     const onPhotoLike = async (photoId) => {
@@ -78,7 +78,7 @@ export function PhotoSelected({
                     </div>
                     <div className={styles['comment-section']}>
                         {location === 'group' ? <p className={`${styles['post-descr']} text-light`}>{pic.description}</p> : null}
-                        <CreateComment location='photo' pic={pic} setComments={setComments} />
+                        <CreateComment location='photo' pic={pic} setComments={setComments} data={setPhotos}/>
                         <Comment comments={comments} />
                     </div>
                 </div>

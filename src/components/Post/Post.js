@@ -29,7 +29,7 @@ export function Post({
 
     const onCommentSelect = async (postId) => {
 
-        let response = await request('get', `api/post/get-comments?postId=${postId.toLowerCase()}`);
+        let response = await request('get', `api/comment/get-post-comments?postId=${postId.toLowerCase()}`);
         setComments(response.data);
         setShowComment(current => current !== postId ? postId : false)
     }
@@ -68,8 +68,8 @@ export function Post({
                         </div>
                                     
                         {showComment === x.key ?
-                            <div>
-                                <CreateComment location='post' pic={x} setComments={setComments} />
+                            <div className={styles['comment-section']}>
+                                <CreateComment location='post' pic={x} setComments={setComments} data={setPosts}/>
                                 <Comment comments={comments} />
                             </div>
                             :

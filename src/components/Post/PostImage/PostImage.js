@@ -5,22 +5,19 @@ import { useEffect } from "react";
 export function PostImage({
     path
 }) {
-    
+
     const [source, setSource] = useState();
     const { getFile } = useDropBox();
 
     useEffect(() => {
 
-            try {
-                
-                getFile(path).then(x => setSource(URL.createObjectURL(x)));
+        if (path !== null) {
 
-            } catch(error) {
+            getFile(path).then(x => setSource(URL.createObjectURL(x)));
 
-                console.log(error)
-            }
-        
-    },[path]);
+        }
+
+    }, [path]);
 
     return (
         <img src={source} className="card-img-top" alt="..." />

@@ -22,7 +22,7 @@ export function PostUserImage({
             setSrc(URL.createObjectURL(res));
         }
         fetchData();
-    }, []);
+    }, [path]);
 
     return(
         <img className={styles["card-user-img"]} src={src} alt="img" />

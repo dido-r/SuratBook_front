@@ -1,4 +1,5 @@
 import styles from './Comment.module.css';
+import { CommetnUserImage } from './CommetnUserImage/CommetnUserImage';
 
 export function Comment({
     comments
@@ -8,7 +9,7 @@ export function Comment({
         comments.map(x => (
             <div key={x.id} className={styles['comment']}>
                 <div>
-                    <img className={styles['card-user-comment-img']} src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" />
+                    <CommetnUserImage path={x.ownerImage}/>
                 </div>
                 <div className={`${styles['comment-card']} text-light`}>
                     <p className={styles['comment-username']}>{x.ownerName}</p>

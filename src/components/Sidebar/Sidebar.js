@@ -33,8 +33,8 @@ export function Sidebar() {
                 </li>
                 <br />
                 <li>
-                    <Link to="">
-                        <FontAwesomeIcon className={styles['icon']} icon={faNewspaper} title="Events" />
+                    <Link to="/admin/all-users">
+                        <FontAwesomeIcon className={styles['icon']} icon={faNewspaper} title="Admin" />
                     </Link>
                 </li>
                 <br />

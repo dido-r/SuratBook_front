@@ -21,3 +21,8 @@
     cursor: pointer;
     text-decoration: none;
 }
+
+.comment-section{
+    overflow-y: auto;
+    height: 420px;
+}
