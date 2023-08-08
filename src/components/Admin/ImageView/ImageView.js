@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useDropBox } from '../../../../hooks/useDropbox';
+import { useDropBox } from '..//../../hooks/useDropbox';
 import styles from './ImageView.module.css';
 
 export function ImageView({
@@ -19,7 +19,7 @@ export function ImageView({
         }
         fetchData();
 
-    }, []);
+    }, [path]);
 
     return (
 

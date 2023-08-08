@@ -1,7 +1,6 @@
+import './NavMenu.css';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './NavMenu.css';
-import axios from 'axios';
 import { useCurrentUser } from '../../hooks/useCookies';
 import { useForm } from '../../hooks/useForm';
 import { request } from '../../services/request';
@@ -11,6 +10,7 @@ export function NavMenu() {
 
     const [src, setSrc] = useState('https://cdn-icons-png.flaticon.com/512/149/149071.png');
     const [dropdown, setDropdown] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
     const user = useCurrentUser();
     const { getFile } = useDropBox();
@@ -20,6 +20,8 @@ export function NavMenu() {
         const fetchData = async () => {
 
             let path = await request('get', 'api/photo/get-a-profile');
+            var isAdmin = await request('get', 'api/user/is-admin');
+            setIsAdmin(isAdmin.data);
             
             if (path.data !== null && path.data !== undefined && path.data !== '') {
 
@@ -81,8 +83,8 @@ export function NavMenu() {
                                 </span>
                                 {dropdown ?
                                     <ul className="dropmenu dark">
-                                        <Link className="dropdown-item" to={`/user/${user.userId}`} onClick={() => setDropdown(!dropdown)}>My profile</Link>
-                                        <hr />
+                                        {isAdmin ? null : <><Link className="dropdown-item" to={`/user/${user.userId}`} onClick={() => setDropdown(!dropdown)}>My profile</Link>
+                                        <hr /></>}
                                         <Link className="dropdown-item" onClick={() => signOut()}>Sign out</Link>
                                     </ul>
                                     :

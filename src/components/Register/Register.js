@@ -3,11 +3,13 @@ import styles from './Register.module.css';
 import { useForm } from '../../hooks/useForm';
 import { useState } from 'react';
 import { request } from '../../services/request';
+import { Spinner } from '../Spinner/Spinner';
 
 export function Register() {
 
     const navigate = useNavigate();
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const { values, onChangeHandler } = useForm({
         firstName: '',
@@ -21,18 +23,27 @@ export function Register() {
     const onRegisterSubmit = async (e) => {
 
         e.preventDefault();
+        setLoading(true);
         setError(null);
-        
-        if(values.pass !== values.rePass){
+
+        if (values.pass !== values.rePass) {
 
             setError("Passwords don't match");
+            setLoading(false);
             return;
         }
 
         let result = await request('post', 'api/user/register', values);
-        result.name === "AxiosError" ?
-            setError(`${result.response.data.message}`) :
-            result.data === 'Successful register' ? navigate("/") : setError('Something went wrong');
+
+        if (result.name === "AxiosError") {
+
+            setError(`${result.response.data.message}`);
+            setLoading(false);
+            
+        } else {
+
+            navigate("/")
+        }
     }
 
     return (
@@ -52,7 +63,7 @@ export function Register() {
                         <div><input className={styles['login-input']} type="date" placeholder={values.birthDate} name="birthDate" required="required" value={values.birthDate} onChange={(e) => onChangeHandler(e)} /></div>
                         <div><input className={styles['login-input']} type="password" placeholder="Password" name="pass" required="required" value={values.pass} onChange={(e) => onChangeHandler(e)} /></div>
                         <div><input className={styles['login-input']} type="password" placeholder="Repeat password" name="rePass" required="required" value={values.rePass} onChange={(e) => onChangeHandler(e)} /></div>
-                        <div><button type="submit">Sign up</button></div>
+                        <div>{loading ? <Spinner /> : <button type="submit">Sign up</button>}</div>
                     </form>
                     <footer>Already have a SURAT? <Link className={styles['login-a']} to="/login">Sign in here</Link></footer>
                 </div>

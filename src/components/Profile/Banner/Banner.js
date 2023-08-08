@@ -21,8 +21,12 @@ export function Banner({
         const fetchData = async () => {
 
             let path = await request('get', 'api/photo/get-a-profile');
-            let res = await getFile(path.data);
-            setSrc(URL.createObjectURL(res));
+
+            if (path.data !== null && path.data !== '' && path.data !== undefined) {
+
+                let res = await getFile(path.data);
+                setSrc(URL.createObjectURL(res));
+            }
         }
         fetchData();
     }, []);
@@ -35,7 +39,7 @@ export function Banner({
     const renderSwitch = (areFriends) => {
 
         checkFriendship();
-        
+
         switch (areFriends) {
             case 'No friends':
                 return <button className="btn btn-outline-primary">Add as friend</button>;
@@ -75,11 +79,11 @@ export function Banner({
                 <img className={styles['profile-img']} src={src} alt="img" />
                 <h2 className={styles['pofile-username']}>{user.name}</h2>
 
-                {currentUser.userId !== user.id ? 
-                <div className={styles['friend-btn']}>
-                    {renderSwitch(areFriends)}
-                </div> : null}
-                
+                {currentUser.userId !== user.id ?
+                    <div className={styles['friend-btn']}>
+                        {renderSwitch(areFriends)}
+                    </div> : null}
+
 
                 <hr className={styles['pofile-hr']} />
                 <ul className={styles['pofile-ul']}>

@@ -13,7 +13,7 @@ export function AllUsers() {
             setUsers(x.data);
             setLoading(false);
         });
-    });
+    }, []);
 
     return (
 

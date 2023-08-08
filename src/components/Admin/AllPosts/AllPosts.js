@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { request } from "../../../services/request";
 import { Spinner } from '../../Spinner/Spinner';
 import { Modal } from '../../Modal/Modal';
-import { ImageView } from './ImageView/ImageView';
+import { ImageView } from '../ImageView/ImageView';
 import styles from './AllPosts.module.css';
 import { Link } from "react-router-dom";
 

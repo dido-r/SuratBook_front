@@ -3,6 +3,7 @@ import styles from './GroupHeader.module.css'
 import { useCurrentUser } from '../../../../hooks/useCookies';
 import { request } from '../../../../services/request';
 import { Modal } from '../../../Modal/Modal';
+import { useNavigate } from 'react-router-dom';
 
 export function GroupHeader({
     setTag,
@@ -14,6 +15,7 @@ export function GroupHeader({
     const [modal, setModal] = useState(false);
     const [pending, setPending] = useState(false);
     const user = useCurrentUser();
+    const navigate = useNavigate();
 
     const configure = (param) => {
         setTag(param);
@@ -60,6 +62,13 @@ export function GroupHeader({
         return false;
     }
 
+    const onGroupDelete = async (groupId) => {
+
+        let result = await request('post', `api/group/delete-group?groupId=${groupId.toLowerCase()}`);
+        result.name === "AxiosError" ? setModal(true) :
+            navigate('/groups');
+    }
+
     return (
         <>
             {modal ? <Modal message='Something went wrong' setModal={setModal} /> : null}
@@ -69,7 +78,7 @@ export function GroupHeader({
                     <h2 className={styles['pofile-username']}>{groupData.name}</h2>
 
                     {user.userId === groupData.ownerId ?
-                        <button className="btn btn-outline-danger">Delete</button> :
+                        <button className="btn btn-outline-danger" onClick={() => onGroupDelete(groupData.id)}>Delete</button> :
                         <div className={styles['group-btn']}>
                             {isMember.isMember ? <button className="btn btn-outline-danger" onClick={() => onGroupEvent('leave')}>Leave group</button>
                                 : 
