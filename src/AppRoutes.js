@@ -12,6 +12,7 @@ import { NoUserGuard } from './components/Guards/NoUserGuard';
 import { AllGroups } from './components/Group/AllGroups/AllGroups';
 import { NotFound } from './components/Guards/NotFound';
 import { Admin } from './components/Admin/Admin';
+import { AdminGuard } from './components/Guards/AdminGuard';
 
 export function AppRoutes() {
 
@@ -30,7 +31,9 @@ export function AppRoutes() {
                 <Route path="/users" element={<UserList />} />
                 <Route path="/groups/create-group" element={<CreateGroup />} />
                 <Route path="/search/:place" element={<SearchResults />} />
-                <Route path="/admin" element={<Admin />} />
+                <Route element={<AdminGuard />}>
+                    <Route path="/admin" element={<Admin />} />
+                </Route>
             </Route>
             <Route path="*" element={<NotFound />} />
         </Routes>

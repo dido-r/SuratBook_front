@@ -11,15 +11,16 @@ export function PostUserImage({
 
     useEffect(() => {
 
-        const fetchData = async () => {
+        const fetchData = async (path) => {
 
-            if (path.data !== null && path.data !== '' && path.data !== undefined) {
+           
+            if (path !== null && path !== '' && path !== undefined) {
 
                 let res = await getFile(path);
                 setSrc(URL.createObjectURL(res));
             }
         }
-        fetchData();
+        fetchData(path);
     }, [path]);
 
     return (

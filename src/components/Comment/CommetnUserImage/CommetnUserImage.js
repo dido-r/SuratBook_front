@@ -11,7 +11,7 @@ export function CommetnUserImage({
 
     useEffect(() => {
 
-        if(path !== null) {
+        if(path !== null && path !== '' && path !== undefined) {
             
             getFile(path).then(x => setSource(URL.createObjectURL(x)));
 
