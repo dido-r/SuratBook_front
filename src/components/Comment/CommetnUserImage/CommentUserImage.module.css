@@ -1,6 +1,7 @@
 .card-user-comment-img {
+    max-height: 35px;
     width: 35px;
-    height: auto;
+    object-fit: cover;
     margin-right: 10px;
     border-radius: 100%;
 }

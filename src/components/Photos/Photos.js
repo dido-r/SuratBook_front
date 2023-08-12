@@ -39,7 +39,7 @@ export function Photos({
             {photos.length === 0 ?
                 <h4 className='text-light text-center'>No photos</h4> :
                 <div className={styles['images-container']}>
-                    {photos.map(x => <Photo location={location} key={x.key} setPhotos={setPhotos} pic={x} />)}
+                    {photos.map(x => <Photo key={x.key} location={location} setPhotos={setPhotos} pic={x} />)}
                 </div>}
         </>);
 }

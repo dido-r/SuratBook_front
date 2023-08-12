@@ -22,11 +22,12 @@ export function useDropBox() {
         try {
 
             let dboPath = param.id === undefined ? `/${user.userId}/` : `/${param.id}/`
-            let res = await dbx.filesUpload({ path: dboPath + file.name, contents: file});
+            let res = await dbx.filesUpload({ path: dboPath + file.name, contents: file, mode: "add"});
             return res.result;
 
         } catch (error) {
-
+            console.log(error)
+            console.log(error.error)
             return new Error();
         }
     }
@@ -53,31 +54,6 @@ export function useDropBox() {
             return new Error();
         }
     }
-
-    // const getAllFiles = async (res) => {
-
-    //     let template = {
-    //         format: "jpeg",
-    //         mode: "strict",
-    //         size: "w640h480"
-    //     }
-        
-    //     try {
-
-    //         let array = await res;
-    //         let args = array.map(x => ({...template, path: x.dropboxPath}));
-    //         let data = {
-    //             entries: args
-    //         }
-    //         let response = await dbx.filesGetThumbnailBatch(data);
-            
-    //         return response.result;
-
-    //     } catch (error) {
-
-    //         return new Error();
-    //     }
-    // }
 
     return { uploadFile, getFile, deleteFile };
 }

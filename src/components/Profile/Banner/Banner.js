@@ -3,6 +3,7 @@ import styles from './Banner.module.css';
 import { useCurrentUser } from '../../../hooks/useCookies';
 import { request } from '../../../services/request';
 import { useDropBox } from '../../../hooks/useDropbox';
+import { useParams } from 'react-router-dom';
 
 export function Banner({
     setTag,
@@ -14,39 +15,55 @@ export function Banner({
     const [areFriends, setAreFriends] = useState('');
     const [src, setSrc] = useState('https://cdn-icons-png.flaticon.com/512/149/149071.png');
     const currentUser = useCurrentUser();
+    const param = useParams();
     const { getFile } = useDropBox();
 
     useEffect(() => {
 
         const fetchData = async () => {
 
-            let path = await request('get', 'api/photo/get-a-profile');
+            let path = await request('get', `api/photo/get-a-profile?userId=${param.id}`);
 
             if (path.data !== null && path.data !== '' && path.data !== undefined) {
 
                 let res = await getFile(path.data);
                 setSrc(URL.createObjectURL(res));
+            }else{
+                setSrc('https://cdn-icons-png.flaticon.com/512/149/149071.png');
             }
         }
+        setActive('post');
         fetchData();
-    }, []);
+    }, [param.id]);
 
     const checkFriendship = () => {
 
         request('get', `api/friend/check-friendship?friendId=${user.id}`).then(x => setAreFriends(x.data));
     }
 
-    const renderSwitch = (areFriends) => {
+    const addAsFriend = async (id) => {
+
+        await request('post', `api/friend/add?friendId=${id}`);
+        setAreFriends('Friends');
+    }
+
+    const removeFriend = async (userId) => {
+
+        await request('post', `api/friend/remove?friendId=${userId}`);
+        setAreFriends('No friends');
+    }
+
+    const renderSwitch = (areFriends, userId) => {
 
         checkFriendship();
 
         switch (areFriends) {
             case 'No friends':
-                return <button className="btn btn-outline-primary">Add as friend</button>;
+                return <button className="btn btn-outline-primary" onClick={() => addAsFriend(userId)}>Add as friend</button>;
             case 'Pending request':
-                return <button className="btn btn-outline-light">Approve</button>;
+                return <button className="btn btn-outline-light">Waiting for approval</button>;
             case 'Friends':
-                return <button className="btn btn-outline-danger">Remove from friends</button>;
+                return <button className="btn btn-outline-danger" onClick={() => removeFriend(userId)}>Remove from friends</button>;
             default:
                 return <></>;
         }
@@ -81,7 +98,7 @@ export function Banner({
 
                 {currentUser.userId !== user.id ?
                     <div className={styles['friend-btn']}>
-                        {renderSwitch(areFriends)}
+                        {renderSwitch(areFriends , user.id)}
                     </div> : null}
 
 
@@ -94,7 +111,7 @@ export function Banner({
                         <h5 className={`${styles['pofile-tags']} ${active === 'photos' ? styles['active-tag'] : null}`}>Photos</h5>
                     </li>
                     <li onClick={() => { configure('friends') }} className={styles['pofile-list']}>
-                        <h5 className={`${styles['pofile-tags']} ${active === 'friends' ? styles['active-tag'] : null}`}>Friend</h5>
+                        <h5 className={`${styles['pofile-tags']} ${active === 'friends' ? styles['active-tag'] : null}`}>Friends</h5>
                     </li>
                     <li onClick={() => { configure('groups') }} className={styles['pofile-list']}>
                         <h5 className={`${styles['pofile-tags']} ${isGroupSection() ? styles['active-tag'] : null}`}>Groups</h5>

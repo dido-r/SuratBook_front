@@ -24,7 +24,7 @@ export function GroupPage() {
     const user = useCurrentUser();
 
     useEffect(() => {
-        try{
+        try {
 
             request('get', `api/group/membership?groupId=${params.id}`).then(x => setIsMember(x.data));
             request('get', `api/group/data?groupId=${params.id}`).then(x => setGroupData(x.data));
@@ -32,7 +32,7 @@ export function GroupPage() {
                 setPosts(x.data);
                 setLoading(false);
             });
-        }catch{
+        } catch {
 
             setModal(true);
         }
@@ -41,23 +41,29 @@ export function GroupPage() {
     const renderSwitch = (tag) => {
         switch (tag) {
             case 'post':
-                return <><CreatePost location={'group'} groupData={{ groupData, isMember }} user={null} setPosts={setPosts} /><Post posts={posts} setPosts={setPosts}/></>;
+                return <>
+                    <CreatePost location={'group'} groupData={{ groupData, isMember }} user={null} setPosts={setPosts} />
+                    <Post posts={posts} setPosts={setPosts} />
+                </>;
             case 'photos':
                 return <Photos location='group' />;
             case 'members':
-                return <Members groupId={groupData.id} setLoading={setLoading}/>;
+                return <Members groupId={groupData.id} setLoading={setLoading} />;
             case 'info':
                 return <GroupInfo groupData={groupData} setGroupData={setGroupData} />;
             case 'requests':
-                return <Requests groupData={groupData} setLoading={setLoading}/>;
+                return <Requests groupData={groupData} setLoading={setLoading} />;
             default:
-                return <Post posts={posts} setPosts={setPosts}/>;
+                return <>
+                    <CreatePost location={'group'} groupData={{ groupData, isMember }} user={null} setPosts={setPosts} />
+                    <Post posts={posts} setPosts={setPosts} />
+                </>;
         }
     }
 
     return (
         <>
-            {modal ? <Modal setModal={setModal} message='Something went wrong'/> : null}
+            {modal ? <Modal setModal={setModal} message='Something went wrong' /> : null}
             <GroupHeader isMember={{ isMember, setIsMember }} groupData={groupData} setTag={setTag} />
             {loading ? <Spinner /> : null}
             {groupData.access === 'Private' ?

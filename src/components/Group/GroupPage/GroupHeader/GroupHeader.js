@@ -74,7 +74,8 @@ export function GroupHeader({
             {modal ? <Modal message='Something went wrong' setModal={setModal} /> : null}
             <div className={styles['collection-hero']}>
                 <div className={styles['img-container']}>
-                    <img className={styles['collection-hero-image']} src="" alt="" />
+                    <img className={styles['collection-hero-image']} src="https://www.shutterstock.com/image-illustration/social-group-friends-3d-rendered-600w-74877187.jpg" alt="" />
+                    {user.userId === groupData.ownerId ? <button className={`${styles['btn-main-photo']}`}>Add photo</button> : null}
                     <h2 className={styles['pofile-username']}>{groupData.name}</h2>
 
                     {user.userId === groupData.ownerId ?
@@ -96,7 +97,7 @@ export function GroupHeader({
                         <li onClick={() => { configure('members') }} className={styles['pofile-list']}>
                             <h5 className={`${styles['pofile-tags']} ${active === 'members' ? styles['active-tag'] : null}`}>Members</h5>
                         </li>
-                        {user.userId === groupData.ownerId ?
+                        {user.userId === groupData.ownerId && groupData.access === "Private"?
                             <li onClick={() => { configure('requests') }} className={styles['pofile-list']}>
                                 <h5 className={`${styles['pofile-tags']} ${active === 'requests' ? styles['active-tag'] : null}`}>Membership requests</h5>
                             </li> : null}

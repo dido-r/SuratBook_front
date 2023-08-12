@@ -61,3 +61,18 @@
     background-color: #282828;
     padding: 5px 15px 5px 15px;
 }
+
+.btn-main-photo{
+    position: absolute;
+    right: 12%;
+    top: 400px;
+    border-radius: 12px;
+    background-color: rgb(40, 39, 39);
+    color: white;
+    border: none;
+    padding: 5px 15px 5px 15px;
+}
+
+.btn-main-photo:hover{
+    background-color: #727272;
+}

@@ -14,7 +14,7 @@ export function CreateComment({
     const { values, onChangeHandler, resetValues } = useForm({
 
         content: '',
-        photoId: pic.key
+        photoId: pic.key === undefined ? pic.id : pic.key
     });
 
     const onCreateComment = async (e) => {

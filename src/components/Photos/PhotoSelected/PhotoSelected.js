@@ -23,8 +23,15 @@ export function PhotoSelected({
     }
 
     useEffect(() => {
-        request('get', `api/comment/get-photo-comments?photoId=${pic.key.toLowerCase()}`).then(x => setComments(x.data));
-    }, [pic.key]);
+
+        if (location === "group") {
+
+            request('get', `api/comment/get-post-comments?postId=${pic.id}`).then(x => setComments(x.data));
+        } else {
+
+            request('get', `api/comment/get-photo-comments?photoId=${pic.key}`).then(x => setComments(x.data));
+        }
+    }, [pic.key, location, pic.id]);
 
     const onPhotoLike = async (photoId) => {
 
@@ -35,7 +42,7 @@ export function PhotoSelected({
     const onSetAsProfile = async (dropboxPath) => {
 
         await request('post', 'api/photo/set-as-profile', dropboxPath);
-        setSelected(false);
+        window.location.reload();
     }
 
     const onPhotoDelete = async (photo) => {
@@ -68,17 +75,19 @@ export function PhotoSelected({
                             {error !== null ? <div className={styles['error-msg']}>
                                 {error}
                             </div> : null}
-                            {currentUser.userId !== pic.ownerId.toLowerCase() ?
-                                !pic.isLiked ? <button className="btn btn-outline-light" onClick={() => onPhotoLike(pic.key)}>Like</button> : null :
+                            {currentUser.userId.toUpperCase() !== pic.ownerId ?
+                                location !== 'group' ?
+                                    !pic.isLiked ? <button className="btn btn-outline-light" onClick={() => onPhotoLike(pic.key)}>Like</button> : null
+                                    : null :
                                 <>
-                                <button className={'btn btn-outline-danger'} onClick={() => onPhotoDelete({ id: pic.key, filePath: pic.dropboxPath })}>Delete</button>
-                                <button className={'btn btn-outline-light'} onClick={() => onSetAsProfile(pic.dropboxPath)}>Set as profile</button>
+                                    <button className={'btn btn-outline-danger'} onClick={() => onPhotoDelete({ id: pic.key, filePath: pic.dropboxPath })}>Delete</button>
+                                    <button className={'btn btn-outline-light'} onClick={() => onSetAsProfile(pic.dropboxPath)}>Set as profile</button>
                                 </>}
                         </div>
                     </div>
                     <div className={styles['comment-section']}>
                         {location === 'group' ? <p className={`${styles['post-descr']} text-light`}>{pic.description}</p> : null}
-                        <CreateComment location='photo' pic={pic} setComments={setComments} data={setPhotos}/>
+                        <CreateComment location={location} pic={pic} setComments={setComments} data={setPhotos} />
                         <Comment comments={comments} />
                     </div>
                 </div>

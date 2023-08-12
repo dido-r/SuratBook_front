@@ -9,8 +9,9 @@
 }
 
 .profile-img {
+    max-height: 150px;
     width: 150px;
-    height: auto;
+    object-fit: cover;
     top: 7rem;
     left: 20rem;
     position: absolute;

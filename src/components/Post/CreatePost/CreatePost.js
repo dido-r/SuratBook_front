@@ -64,7 +64,7 @@ export function CreatePost({
             dropboxPath: values.dropboxPath,
             likes: 0,
             comments: 0,
-            ownerId: loggedUser.userId,
+            ownerId: loggedUser.userId.toUpperCase(),
             ownerName: loggedUser.userName,
             ownerImage: result.data.ownerImage
         };

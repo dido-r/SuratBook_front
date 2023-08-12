@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom';
 import styles from './GroupList.module.css';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { request } from '../../../services/request';
 import { Spinner } from '../../Spinner/Spinner';
+import { GroupCard } from '../GroupCard/GroupCard';
 
 export function GroupList({
     tag,
@@ -32,16 +32,7 @@ export function GroupList({
                 :
                 <div className={styles['group-container']} >
                     {groups.map(x => (
-                        <section key={x.id} className={`${styles['group-container-section']} bg-dark bg-gradient`}>
-                            <Link to={`/group/${x.id}`} className={styles['group-container-link']}>
-                                <img className="card-img-top" src="https://www.shutterstock.com/image-illustration/social-group-friends-3d-rendered-600w-74877187.jpg" alt="img" />
-
-                                <div className="card-body">
-                                    <h5 className="text-light">{x.name}</h5>
-                                </div>
-                            </Link>
-                            {tag === 'joined' ? <button className="btn btn-outline-danger">Leave</button> : <button className="btn btn-outline-danger">Delete</button>}
-                        </section>
+                        <GroupCard key={x.id} x={x}/>
                     ))}
                 </div>
             }

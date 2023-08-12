@@ -29,8 +29,12 @@ export function NavMenu() {
                 setSrc(URL.createObjectURL(res));
             }
         }
-        fetchData();
-    }, []);
+
+        if(user.userId !== undefined){
+            
+            fetchData()
+        }
+    }, [user.userId]);
 
     const { values, onChangeHandler, resetValues } = useForm({
 
@@ -48,25 +52,7 @@ export function NavMenu() {
     const onSearchSubmit = async (e) => {
 
         e.preventDefault();
-
-        if (values.place === 'users') {
-
-            let response = await request('get', `api/user/search?name=${values.searchTerm}`);
-            navigate(`/search/${values.place}`, { state: response.data });
-        }
-
-        if (values.place === 'groups') {
-
-            let response = await request('get', `api/group/search?name=${values.searchTerm}`);
-            navigate(`/search/${values.place}`, { state: response.data });
-        }
-
-        if (values.place === 'posts') {
-
-            let response = await request('get', `api/post/search?name=${values.searchTerm}`);
-            navigate(`/search/${values.place}`, { state: response.data });
-        }
-
+        navigate(`/search/${values.place}`, { state: values.searchTerm });
         resetValues(e);
     }
 

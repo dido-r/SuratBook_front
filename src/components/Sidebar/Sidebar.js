@@ -2,22 +2,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faPeopleGroup, faUserGroup, faFile } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import styles from './Sidebar.module.css'
-import { useState } from 'react';
-import { useEffect } from 'react';
-import { request } from '../../services/request';
 
 export function Sidebar() {
 
-    const [isAdmin, setIsAdmin] = useState(false);
-
-    useEffect(() => {
-
-        request('get', 'api/user/is-admin').then(x => setIsAdmin(x.data));
-        
-    }, []);
     return (
         
-        isAdmin ? null :
         <div className={`${styles['side-menu']} text-bg-dark bg-dark`}>
             <ul>
                 <li >

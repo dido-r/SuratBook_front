@@ -10,18 +10,19 @@ export function EditInfo({
 }) {
 
     const [error, setError] = useState(false);
-    const { values, onChangeHandler, resetValues} = useForm({
-        town: info.town !== null ? info.town : undefined,
-        address: info.address !== null ? info.address : undefined,
-        country: info.country !== null ? info.country : undefined,
-        university: info.university !== null ? info.university : undefined,
-        universityDegreeId: info.universityDegreeId !== undefined ? info.universityDegreeId : 0,
-        school: info.school !== null ? info.school : undefined
+    const { values, onChangeHandler, resetValues } = useForm({
+        town: info.town !== null ? info.town : "",
+        address: info.address !== null ? info.address : "",
+        country: info.country !== null ? info.country : "",
+        university: info.university !== null ? info.university : "",
+        universityDegreeId: info.universityDegree !== null ? info.universityDegreeId : 0,
+        school: info.school !== null ? info.school : ""
     });
 
     const onEditInfoSubmit = async (e) => {
 
         e.preventDefault();
+        
         let response = await request('post', 'api/user/edit-info', values);
 
         if (response.name === "AxiosError") {

@@ -8,7 +8,7 @@ import { Modal } from "../Modal/Modal";
 import { GroupList } from "../Group/ListOfGroups/GroupList";
 import { useParams } from "react-router-dom";
 import { CreatePost } from "../Post/CreatePost/CreatePost";
-import { Friends } from '../Friends/Friends';
+import { Friends } from '../UserList/Friends/Friends';
 import { Spinner } from '../Spinner/Spinner';
 import styles from './Profile.module.css';
 
@@ -23,9 +23,18 @@ export function Profile() {
     const [user, setUser] = useState({});
     const [end, setEnd] = useState(false);
     const [loading, setLoading] = useState(true);
-    const param = useParams()
+    const param = useParams();    
 
     useEffect(() => {
+        
+        setOffset(0);
+        setTag('post');
+        setGroupTag('');
+        setModal(false);
+        setMyPosts([]);
+        setUser({});
+        setEnd(false);
+        setLoading(true);
 
         try {
 
@@ -59,7 +68,7 @@ export function Profile() {
                         </>}
                 </>;
             case 'photos':
-                return <Photos />;
+                return <Photos location='photo'/>;
             case 'friends':
                 return <Friends />;
             case 'groups':
@@ -67,7 +76,14 @@ export function Profile() {
             case 'info':
                 return <Info />;
             default:
-                return <><CreatePost location={'profile'} user={user} setPosts={setMyPosts} /><Post posts={myPosts} setPosts={setMyPosts} /></>;
+                return <>
+                    <CreatePost location={'profile'} user={user} setPosts={setMyPosts} />
+                    {loading ? <Spinner /> :
+                        <>
+                            <Post posts={myPosts} setPosts={setMyPosts} />
+                            {!end ? <button onClick={() => setOffset(x => x + limit)} className={`${styles['load-more']} btn btn-outline-light`}>Load more</button> : null}
+                        </>}
+                </>;
         }
     }
 

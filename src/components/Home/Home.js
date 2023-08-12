@@ -29,7 +29,7 @@ export function Home() {
 
     return (
 
-        <div className="d-flex" >
+        <div className="d-flex" onScroll={() => console.log('scroll')}>
             <div className={styles['card-container']}>
                 <CreatePost location={'home'} posts={posts} setPosts={setPosts} />
                 {loading ? <Spinner /> :

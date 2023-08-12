@@ -58,7 +58,7 @@ export function Post({
                             <p className="text-light">{x.likes} Likes {x.comments} Comments</p>
                             <button onClick={() => onCommentSelect(x.key)} className="btn btn-outline-light">Comment</button>
 
-                            {currentUser.userId !== x.ownerId.toLowerCase() ?
+                            {currentUser.userId.toUpperCase() !== x.ownerId ?
                                 !x.isLiked ? <button className="btn btn-outline-light" onClick={() => onPostLike(x.key)}>Like</button> : null
                                 :
                                 <>
