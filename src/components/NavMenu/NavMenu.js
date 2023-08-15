@@ -14,6 +14,11 @@ export function NavMenu() {
     const navigate = useNavigate();
     const user = useCurrentUser();
     const { getFile } = useDropBox();
+    const { values, onChangeHandler, resetValues } = useForm({
+
+        searchTerm: '',
+        place: 'users'
+    });
 
     useEffect(() => {
 
@@ -22,7 +27,7 @@ export function NavMenu() {
             let path = await request('get', 'api/photo/get-a-profile');
             var isAdmin = await request('get', 'api/user/is-admin');
             setIsAdmin(isAdmin.data);
-            
+
             if (path.data !== null && path.data !== undefined && path.data !== '') {
 
                 let res = await getFile(path.data);
@@ -30,17 +35,12 @@ export function NavMenu() {
             }
         }
 
-        if(user.userId !== undefined){
-            
+        if (user.userId !== undefined) {
+
             fetchData()
         }
     }, [user.userId]);
 
-    const { values, onChangeHandler, resetValues } = useForm({
-
-        searchTerm: '',
-        place: 'users'
-    });
 
     const signOut = async () => {
 
@@ -62,7 +62,7 @@ export function NavMenu() {
                 <div className="container-fluid">
                     <Link to="/" className="navbar-brand">SuratBook</Link>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <img className="card-user-img" src={src} alt='img' />
+                        <img className="card-user-img" src={src} alt='img' onClick={() => setDropdown(!dropdown)} />
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item dropdown text-light">
                                 <span className="nav-link dropdown-toggle" onClick={() => setDropdown(!dropdown)}>
@@ -70,7 +70,7 @@ export function NavMenu() {
                                 {dropdown ?
                                     <ul className="dropmenu dark">
                                         {isAdmin ? null : <><Link className="dropdown-item" to={`/user/${user.userId}`} onClick={() => setDropdown(!dropdown)}>My profile</Link>
-                                        <hr /></>}
+                                            <hr /></>}
                                         <Link className="dropdown-item" onClick={() => signOut()}>Sign out</Link>
                                     </ul>
                                     :
@@ -80,7 +80,7 @@ export function NavMenu() {
                         </ul>
                         <form className="d-flex" role="search" onSubmit={(e) => onSearchSubmit(e)}>
                             <input className="form-control me-2" required="required" name="searchTerm" type="search" placeholder="Search" aria-label="Search" value={values.searchTerm} onChange={(e) => onChangeHandler(e)} />
-                            <select className="select-serch" name="place" value={values.where} onChange={(e) => onChangeHandler(e)}>
+                            <select className="select-serch" name="place" value={values.place} onChange={(e) => onChangeHandler(e)}>
                                 <option className='text-secondary' value="users">Users</option>
                                 <option className='text-secondary' value="groups">Groups</option>
                                 <option className='text-secondary' value="posts">Posts</option>

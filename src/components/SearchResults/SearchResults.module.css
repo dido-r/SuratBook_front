@@ -2,8 +2,10 @@
     display: flex;
     flex-wrap: wrap;
     padding-top: 100px;
+}
+
+.search-margin {
     margin-left: 10%;
-    text-align: center;
 }
 
 .no-results {

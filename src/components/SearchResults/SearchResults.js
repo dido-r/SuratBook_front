@@ -5,63 +5,69 @@ import { UserCard } from '../UserList/UserCard/UserCard';
 import { GroupCard } from '../Group/GroupCard/GroupCard';
 import { useEffect, useState } from 'react';
 import { request } from '../../services/request';
+import { Spinner } from '../Spinner/Spinner';
 
 export function SearchResults() {
 
-    const location = useLocation();
-    const [searched, setSearched] = useState([]);
+    const location = useLocation()
+    const [results, setResults] = useState([]);
+    const [current, setCurrent] = useState('');
 
     useEffect(() => {
 
-        var search = location.state;
-        
+        setCurrent('');
+        let url;
+
         if (location.pathname === '/search/users') {
 
-            request('get', `api/user/search?name=${search}`).then(x => setSearched(x.data));
+            url = `api/user/search?name=${location.state}`;
+
+        } else if (location.pathname === '/search/groups') {
+
+            url = `api/group/search?name=${location.state}`;
+
+        } else if (location.pathname === '/search/posts') {
+
+            url = `api/post/search?name=${location.state}`;
         }
 
-        if (location.pathname === '/search/groups') {
+        request('get', url).then(x => {
+            setResults(x.data);
+            setCurrent(url.split('/')[1]);
+        });
 
-            request('get', `api/group/search?name=${search}`).then(x => setSearched(x.data));
-        }
-
-        if (location.pathname === '/search/posts') {
-
-            request('get', `api/post/search?name=${search}`).then(x => setSearched(x.data));
-        }
-
-    }, [location.state, location.pathname]);
+    }, [location.pathname, location.state]);
 
     return (
 
-        searched.length === 0 ?
-            <div className={styles['no-results']}>
-                <div>
-                    <img src='/no-result.png' alt='not-found' />
-                </div>
+        <div className={`${styles['search-container']} ${current === 'user' || current === 'group' ? styles['search-margin'] : null}`}>
+            {current === '' ? <Spinner /> : results.length === 0 ?
+                <div className={styles['no-results']}>
+                    <div>
+                        <img src='/no-result.png' alt='not-found' />
+                    </div>
 
-                <div className={styles['no-results-text']}>
-                    <h1>OOPS!</h1>
-                    <h5>NO RESULTS</h5>
-                    <h5>FOUND</h5>
+                    <div className={styles['no-results-text']}>
+                        <h1>OOPS!</h1>
+                        <h5>NO RESULTS</h5>
+                        <h5>FOUND</h5>
+                    </div>
                 </div>
-            </div>
-            :
-            <>
-                <div className={styles['search-container']}>
+                :
+                <>
                     {location.pathname === '/search/users' ?
-                        searched.map(x => (
+                        current !== 'user' ? <Spinner /> : results.map(x => (
                             <UserCard key={x.id} x={x} button={<button className="btn btn-outline-light">View</button>} />
                         )) : null}
 
                     {location.pathname === '/search/groups' ?
-                        searched.map(x => (
+                        current !== 'group' ? <Spinner /> : results.map(x => (
                             <GroupCard key={x.id} x={x} />
                         )) : null}
-                </div>
-                
-                {location.pathname === '/search/posts' ?
-                    <Post posts={searched} setPosts={setSearched} /> : null}
-            </>
+
+                    {location.pathname === '/search/posts' ?
+                        current !== 'post' ? <Spinner /> : <Post posts={results} setPosts={setResults} /> : null}
+                </>}
+        </div>
     );
 }

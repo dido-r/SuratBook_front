@@ -4,6 +4,7 @@ import { useForm } from '../../../hooks/useForm';
 import styles from './CreatePost.module.css';
 import { request } from '../../../services/request';
 import { useCurrentUser } from '../../../hooks/useCookies';
+import { Spinner } from '../../Spinner/Spinner';
 
 export function CreatePost({
     setPosts,
@@ -15,6 +16,7 @@ export function CreatePost({
     const loggedUser = useCurrentUser();
     const { uploadFile } = useDropBox();
     const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const { values, onChangeHandler, resetValues } = useForm({
 
@@ -27,6 +29,7 @@ export function CreatePost({
     const onCreatePost = async (e) => {
 
         e.preventDefault();
+        setLoading(true);
         setError(false);
 
         try {
@@ -54,6 +57,8 @@ export function CreatePost({
 
             setError('Something went wrong!');
         }
+
+        setLoading(false);
     }
 
     const updatePosts = (result) => {
@@ -85,7 +90,7 @@ export function CreatePost({
                             </div> : null}
                             <textarea className={styles['create-ta']} required="required" name="description" rows="3" placeholder="Write your post here..." value={values.description} onChange={(e) => onChangeHandler(e)} />
                             <input className={styles['create-file']} type="file" value={values.file} onChange={(e) => onChangeHandler(e)} /><br />
-                            <button className={`${styles['post-create-btn']} btn btn-outline-light`}>Submit</button>
+                            {loading ? <Spinner /> : <button className={`${styles['post-create-btn']} btn btn-outline-light`}>Submit</button>}
                         </form>
                     </div>
                 </div>) : null}
