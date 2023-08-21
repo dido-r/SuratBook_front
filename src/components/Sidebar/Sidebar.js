@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faPeopleGroup, faUserGroup, faFile } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faPeopleGroup, faUserGroup, faFile, faMessage } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import styles from './Sidebar.module.css'
 
@@ -33,6 +33,11 @@ export function Sidebar() {
                     </Link>
                 </li>
                 <br />
+                <li >
+                    <Link to="/chat">
+                        <FontAwesomeIcon className={styles['icon']} icon={faMessage} title="Chat" />
+                    </Link>
+                </li>
             </ul>
         </div>
     );

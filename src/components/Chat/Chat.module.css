@@ -1,0 +1,145 @@
+.chat-container {
+    margin-left: 130px;
+    padding-top: 80px;
+    color: aliceblue;
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100px;
+}
+
+.chat-container  ul li,
+.chat-container form {
+    margin-bottom: 10px;
+}
+
+.chat-container hr {
+    border-right: 2px solid #534a4a;
+    height: 85vh;
+}
+
+.chat {
+    flex-basis: 700px;
+}
+
+.chat-history,
+.chat-friends {
+    flex-basis: 330px;
+}
+
+.chat-filter-input,
+.chat-friends-input {
+    width: 290px;
+    padding: 7px;
+    border-radius: 5px;
+    background: #efeeee;
+}
+
+.chat-filter-input:focus,
+.chat-friends-input:focus,
+.chat-input:focus {
+    outline: none;
+    border-color: #465d8b;
+    box-shadow: inset 0 1px 1px #465d8b, 0 0 2px 1px #465d8b;
+}
+
+.online-fr-img {
+    height: 70px;
+    margin-right: 20px;
+}
+
+.chat-history ul {
+    list-style-type: none;
+    padding: 0;
+    margin-right: 10px;
+    overflow-y: auto;
+    height: 580px;
+}
+
+.chat-history ul li:hover {
+    cursor: pointer;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.chat-friends h5{
+    text-align: center;
+}
+
+.chat-friends ul{
+    list-style-type: none;
+    overflow-y: auto;
+    height: 580px;
+}
+
+.chat-friends ul li{
+    display: flex;
+    letter-spacing: 1px;
+    font-size: 18px;
+    align-items: center;
+}
+
+.chat-form,
+.chat-friends-form{
+    margin-left: 25px;
+}
+
+.chat-input{
+    position: absolute;
+    bottom: 18px;    
+    padding: 7px;
+    border-radius: 5px;
+    background: #efeeee;
+    width: 42%; 
+}
+
+.chat-messages{
+    overflow-y: auto;
+    height: 570px;
+}
+
+.chat-button{
+    text-align: center;
+}
+
+.chat-messages button{
+    width: 20%;
+    margin: auto;
+}
+
+.chat-messages ul{
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    padding-top: 20px;
+}
+
+.message-mine span{
+    background: #1359e5;
+    padding: 5px 10px 5px 10px;
+    border-radius: 5px;
+    float: right;
+    margin-right: 30px;
+    max-width: 40%;
+}
+
+.message-friend span{
+    background: #5b5d61;
+    padding: 5px 10px 5px 10px;
+    border-radius: 5px;
+    float: left;
+    max-width: 40%;
+}
