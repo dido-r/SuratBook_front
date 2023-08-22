@@ -13,7 +13,7 @@ import { AllGroups } from './components/Group/AllGroups/AllGroups';
 import { NotFound } from './components/Guards/NotFound';
 import { Admin } from './components/Admin/Admin';
 import { AdminGuard } from './components/Guards/AdminGuard';
-import { Chat } from './components/Chat/Chat';
+import { ChatHub } from './components/Chat/ChatHub';
 
 export function AppRoutes() {
 
@@ -32,7 +32,7 @@ export function AppRoutes() {
                 <Route path="/users" element={<UserList />} />
                 <Route path="/groups/create-group" element={<CreateGroup />} />
                 <Route path="/search/:place" element={<SearchResults />} />
-                <Route path="/chat" element={<Chat />} />
+                <Route path="/chat" element={<ChatHub />} />
                 <Route element={<AdminGuard />}>
                     <Route path="/admin" element={<Admin />} />
                 </Route>

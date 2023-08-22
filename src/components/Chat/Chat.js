@@ -1,16 +1,33 @@
 import { useRef } from 'react';
 import styles from './Chat.module.css';
 import { useEffect } from 'react';
+import { useForm } from '../../hooks/useForm';
+import { useCurrentUser } from '../../hooks/useCookies';
 
-export function Chat() {
+export function Chat({
+    chat,
+    sendMessage
+}) {
 
     const bottom = useRef(null);
+    const { values, onChangeHandler, resetValues } = useForm({
+
+        message: ''
+    });
+    const user = useCurrentUser();
 
     useEffect(() => {
-
+        
         bottom.current?.scrollIntoView({ behavior: 'smooth' });
 
-    }, []);
+    }, [chat]);
+
+    const onMessageSend = (e) => {
+
+        e.preventDefault();
+        sendMessage(user.userId, values.message);
+        resetValues(e);
+    }
 
     return (
         <div className={styles['chat-container']}>
@@ -18,7 +35,7 @@ export function Chat() {
             <div className={styles['chat-history']}>
                 <h5 className={styles['chat-history-header']}>Chat history</h5>
                 <form>
-                    <input className={styles['chat-filter-input']} required='required' type="text" name="content" placeholder="Search for chat..." />
+                    <input className={styles['chat-filter-input']} required='required' type="text" name="message" placeholder="Search for chat..." />
                 </form>
                 <ul>
                     <li className='d-flex'>
@@ -47,24 +64,17 @@ export function Chat() {
             <hr />
 
             <div className={styles['chat']}>
-                <form className={styles['chat-form']}>
-                    <input className={styles['chat-input']} required='required' type="text" name="content" placeholder="Search friend..." />
+                <form className={styles['chat-form']} onSubmit={(e) => onMessageSend(e)}>
+                    <input className={styles['chat-input']} required='required' type="text" name="message" placeholder="Search friend..." value={values.message} onChange={(e) => onChangeHandler(e)}/>
                 </form>
                 <div className={styles['chat-messages']}>
                     <div className={styles['chat-button']}>
                         <button className='btn btn-outline-light'>Show more</button>
                     </div>
                     <ul>
-                        <li className={styles['message-mine']}><span>test test test test test test test test test testtest test test test test test test test test testtest test test test test test test test test testtest test test test test test test test test testtest test test test test test test test test testtest test test test test test test test test testtest test test test test test test test test testtest test test test test test test test test testtest test test test test test test test test testtest test test test test test test test test test</span></li>
-                        <li className={styles['message-friend']}><span>test test test test test test test test test testtest test test test test test test test test testtest test test test test test test test test testtest test test test test test test test test testtest test test test test test test test test testtest test test test test test test test test testtest test test test test test test test test testtest test test test test test test test test testtest test test test test test test test test testtest test test test test test test test test test</span></li>
-                        <li className={styles['message-mine']}><span>test</span></li>
-                        <li className={styles['message-mine']}><span>test</span></li>
-                        <li className={styles['message-friend']}><span>test</span></li>
-                        <li className={styles['message-mine']}><span>test</span></li>
-                        <li className={styles['message-mine']}><span>test</span></li>
-                        <li className={styles['message-mine']}><span>test</span></li>
-                        <li className={styles['message-friend']}><span>test</span></li>
-                        <li className={styles['message-friend']}><span>test</span></li>
+                        {chat.map(x => (
+                            <li className={x.userId === user.userId ? styles['message-mine'] : styles['message-friend']}><span>{x.message}</span></li>
+                        ))}
                     </ul>
                     <div ref={bottom} />
                 </div>
