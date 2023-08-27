@@ -18,24 +18,21 @@
 }
 
 .chat {
-    flex-basis: 700px;
+    flex-basis: 73%;
 }
 
-.chat-history,
-.chat-friends {
-    flex-basis: 330px;
+.chat-history{
+    flex-basis: 25%;
 }
 
-.chat-filter-input,
-.chat-friends-input {
+.chat-filter-input {
     width: 290px;
     padding: 7px;
     border-radius: 5px;
     background: #efeeee;
 }
 
-.chat-filter-input:focus,
-.chat-friends-input:focus,
+.chat-filter-input:focus
 .chat-input:focus {
     outline: none;
     border-color: #465d8b;
@@ -75,25 +72,7 @@
     background: #555;
 }
 
-.chat-friends h5{
-    text-align: center;
-}
-
-.chat-friends ul{
-    list-style-type: none;
-    overflow-y: auto;
-    height: 580px;
-}
-
-.chat-friends ul li{
-    display: flex;
-    letter-spacing: 1px;
-    font-size: 18px;
-    align-items: center;
-}
-
-.chat-form,
-.chat-friends-form{
+.chat-form{
     margin-left: 25px;
 }
 
@@ -103,7 +82,7 @@
     padding: 7px;
     border-radius: 5px;
     background: #efeeee;
-    width: 42%; 
+    width: 64%; 
 }
 
 .chat-messages{

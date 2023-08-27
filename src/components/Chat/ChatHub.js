@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import { Chat } from './Chat';
 
@@ -12,11 +12,12 @@ export function ChatHub() {
             .withUrl('https://localhost:7062/chat')
             .withAutomaticReconnect()
             .build();
-
+            
         setConnection(newConnection);
     }, []);
 
     useEffect(() => {
+
         if (connection) {
             connection.start()
                 .then(result => {
@@ -30,16 +31,16 @@ export function ChatHub() {
         }
     }, [connection]);
 
-    const sendMessage = async (user, message) => {
+    const sendMessage = async (user, message, connections) => {
 
         const chatMessage = {
             userId: user,
             message: message
         };
-        
+
         if (connection._connectionStarted) {
             try {
-                await connection.send('SendMessage', chatMessage);
+                await connection.send('SendMessage', chatMessage, connections);
             }
             catch (e) {
                 console.log(e);
@@ -52,6 +53,6 @@ export function ChatHub() {
 
     return (
 
-        <Chat chat={chat} sendMessage={sendMessage}/>
+        <Chat chat={chat} sendMessage={sendMessage} connection={connection}/>
     );
 };

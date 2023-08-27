@@ -1,12 +1,14 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import styles from './Chat.module.css';
 import { useEffect } from 'react';
 import { useForm } from '../../hooks/useForm';
 import { useCurrentUser } from '../../hooks/useCookies';
+import { request } from '../../services/request';
 
 export function Chat({
     chat,
-    sendMessage
+    sendMessage,
+    connection
 }) {
 
     const bottom = useRef(null);
@@ -14,10 +16,13 @@ export function Chat({
 
         message: ''
     });
+    const [chatRooms, setChatRooms] = useState([]);
+    const [connections, setConnections] = useState([]);
     const user = useCurrentUser();
 
     useEffect(() => {
         
+        request('get', 'api/chatRoom/get').then(x => setChatRooms(x.data))
         bottom.current?.scrollIntoView({ behavior: 'smooth' });
 
     }, [chat]);
@@ -25,8 +30,26 @@ export function Chat({
     const onMessageSend = (e) => {
 
         e.preventDefault();
-        sendMessage(user.userId, values.message);
+        console.log(connections)
+        sendMessage(user.userId, values.message, connections);
         resetValues(e);
+    }
+
+    // const startChat = async (receiverId) => {
+
+    //     await request('post', `api/chatRoom/create?receiverId=${receiverId}`)
+    // }
+
+    const onChatSelect = async (chatId) => {
+
+        await request('post', 'api/chatRoom/create-connection', 
+        {
+            connectionId: connection.connection.connectionId, 
+            chatRoomId: chatId
+        });
+
+        let result = await request('get', `api/chatRoom/get-connection?chatId=${chatId}`);
+        setConnections(result.data);
     }
 
     return (
@@ -38,27 +61,15 @@ export function Chat({
                     <input className={styles['chat-filter-input']} required='required' type="text" name="message" placeholder="Search for chat..." />
                 </form>
                 <ul>
-                    <li className='d-flex'>
+                    {chatRooms.map(x => (
+                        <li key={x.id} className='d-flex' onClick={() => onChatSelect(x.id)}>
                         <img className={styles['online-fr-img']} src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" />
                         <div>
-                            <h5>Friend</h5>
-                            <p>Resent messages</p>
+                            <h5>{x.chatFriendName}</h5>
+                            <p>{x.lastMessage}</p>
                         </div>
                     </li>
-                    <li className='d-flex'>
-                        <img className={styles['online-fr-img']} src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" />
-                        <div>
-                            <h5>Friend</h5>
-                            <p>Resent messages</p>
-                        </div>
-                    </li>
-                    <li className='d-flex'>
-                        <img className={styles['online-fr-img']} src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" />
-                        <div>
-                            <h5>Friend</h5>
-                            <p>Resent messages</p>
-                        </div>
-                    </li>
+                    ))}
                 </ul>
             </div>
             <hr />
@@ -68,7 +79,7 @@ export function Chat({
                     <input className={styles['chat-input']} required='required' type="text" name="message" placeholder="Search friend..." value={values.message} onChange={(e) => onChangeHandler(e)}/>
                 </form>
                 <div className={styles['chat-messages']}>
-                    <div className={styles['chat-button']}>
+                     <div className={styles['chat-button']}>
                         <button className='btn btn-outline-light'>Show more</button>
                     </div>
                     <ul>
@@ -78,28 +89,6 @@ export function Chat({
                     </ul>
                     <div ref={bottom} />
                 </div>
-            </div>
-            <hr />
-
-            <div className={styles['chat-friends']}>
-                <h5>Browse friends for chat</h5>
-                <form className={styles['chat-friends-form']}>
-                    <input className={styles['chat-friends-input']} required='required' type="text" name="content" placeholder="Search friend..." />
-                </form>
-                <ul>
-                    <li>
-                        <img className={styles['online-fr-img']} src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" />
-                        <p>Friend Friend</p>
-                    </li>
-                    <li>
-                        <img className={styles['online-fr-img']} src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" />
-                        <p>Friend Friend</p>
-                    </li>
-                    <li>
-                        <img className={styles['online-fr-img']} src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" />
-                        <p>Friend Friend</p>
-                    </li>
-                </ul>
             </div>
         </div>
     );
