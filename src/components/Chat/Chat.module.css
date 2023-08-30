@@ -54,6 +54,14 @@
 
 .chat-history ul li:hover {
     cursor: pointer;
+    border-radius: 10px;
+    background-color: #4d4d4d;
+    transition: 0.4s;
+}
+
+.chat-selected{
+    border-radius: 10px;
+    background-color: #4d4d4d;
 }
 
 ::-webkit-scrollbar {
