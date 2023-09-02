@@ -7,7 +7,7 @@
     height: 100px;
 }
 
-.chat-container  ul li,
+.chat-container ul li,
 .chat-container form {
     margin-bottom: 10px;
 }
@@ -21,7 +21,7 @@
     flex-basis: 73%;
 }
 
-.chat-history{
+.chat-history {
     flex-basis: 25%;
 }
 
@@ -32,8 +32,7 @@
     background: #efeeee;
 }
 
-.chat-filter-input:focus
-.chat-input:focus {
+.chat-filter-input:focus .chat-input:focus {
     outline: none;
     border-color: #465d8b;
     box-shadow: inset 0 1px 1px #465d8b, 0 0 2px 1px #465d8b;
@@ -52,6 +51,10 @@
     height: 580px;
 }
 
+.chat-history ul li div {
+    flex-basis: 60%;
+}
+
 .chat-history ul li:hover {
     cursor: pointer;
     border-radius: 10px;
@@ -59,7 +62,19 @@
     transition: 0.4s;
 }
 
-.chat-selected{
+.notification {
+    background-color: rgb(172, 22, 22);
+    height: 13px;
+    width: 13px;
+    border-radius: 50%;
+    align-self: center;
+}
+
+.last-message{
+    color: #888 !important;
+}
+
+.chat-selected {
     border-radius: 10px;
     background-color: #4d4d4d;
 }
@@ -80,41 +95,41 @@
     background: #555;
 }
 
-.chat-form{
+.chat-form {
     margin-left: 25px;
 }
 
-.chat-input{
+.chat-input {
     position: absolute;
-    bottom: 18px;    
+    bottom: 18px;
     padding: 7px;
     border-radius: 5px;
     background: #efeeee;
-    width: 64%; 
+    width: 64%;
 }
 
-.chat-messages{
+.chat-messages {
     overflow-y: auto;
     height: 570px;
 }
 
-.chat-button{
+.chat-button {
     text-align: center;
 }
 
-.chat-messages button{
+.chat-messages button {
     width: 20%;
     margin: auto;
 }
 
-.chat-messages ul{
+.chat-messages ul {
     display: flex;
     flex-direction: column;
     list-style-type: none;
     padding-top: 20px;
 }
 
-.message-mine span{
+.message-mine span {
     background: #1359e5;
     padding: 5px 10px 5px 10px;
     border-radius: 5px;
@@ -123,7 +138,7 @@
     max-width: 40%;
 }
 
-.message-friend span{
+.message-friend span {
     background: #5b5d61;
     padding: 5px 10px 5px 10px;
     border-radius: 5px;

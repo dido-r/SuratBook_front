@@ -9,27 +9,72 @@ export function Chat({
     chat,
     setChat,
     sendMessage,
-    connection
-    // notification,
-    // setNotification
+    chatRooms,
+    setChatRooms,
+    notification
 }) {
-
+    
     const bottom = useRef(null);
     const { values, onChangeHandler, resetValues } = useForm({
-
+        
         message: ''
     });
-    const [chatRooms, setChatRooms] = useState([]);
     const [currentChatId, setCurrentChatId] = useState(null);
     const [connections, setConnections] = useState([]);
+    const [offset, setOffset] = useState(0);
+    const messageLimit = 50;
+    const [end, setEnd] = useState(false);
     const user = useCurrentUser();
+    
+    useEffect(() => {
+        
+        if(offset === 0){
+            
+            bottom.current?.scrollIntoView();
+        }
+        
+    }, [chat, offset]);
+    
+    useEffect(() => {
+        
+        const newList = chatRooms.map((x) => {
+            
+            if (x.id === notification && currentChatId !== x.id) {
+                
+                request('post', `api/chatRoom/set-notification?chatId=${x.id}&param=on`);
 
+                const updatedItem = {
+                    ...x,
+                    notification: true,
+                };
+                
+                return updatedItem;
+            }
+            
+            return x;
+        });
+        
+        setChatRooms(newList);
+        
+    }, [notification]);
+    
     useEffect(() => {
 
-        request('get', 'api/chatRoom/get').then(x => setChatRooms(x.data))
-        bottom.current?.scrollIntoView({ behavior: 'smooth' });
+        if (offset !== 0) {
 
-    }, [chat]);
+            request('get', `api/chatRoom/get-messages?chatId=${currentChatId}&offset=${offset}&messageLimit=${messageLimit}`)
+                .then(x => {
+
+                    if (x.data.length < messageLimit) {
+
+                        setEnd(true)
+                    }
+
+                    setChat(current => [...x.data, ...current]);
+                });
+        }
+
+    }, [offset]);
 
     const onMessageSend = (e) => {
 
@@ -43,22 +88,37 @@ export function Chat({
     //     await request('post', `api/chatRoom/create?receiverId=${receiverId}`)
     // }
 
+    const notificationClear = (id) => {
+
+        const newList = chatRooms.map((x) => {
+
+            if (x.id === id) {
+
+                request('post', `api/chatRoom/set-notification?chatId=${id}&param=off`);
+
+                const updatedItem = {
+                    ...x,
+                    notification: false,
+                };
+
+                return updatedItem;
+            }
+
+            return x;
+        });
+
+        setChatRooms(newList);
+    }
+
     const onChatSelect = async (chatId) => {
 
-        await request('post', 'api/chatRoom/create-connection',
-            {
-                connectionId: connection.connection.connectionId,
-                chatRoomId: chatId
-            });
-
+        setOffset(0);
+        notificationClear(chatId);
+        setCurrentChatId(chatId);
         let result = await request('get', `api/chatRoom/get-connection?chatId=${chatId}`);
         setConnections(result.data);
-        setCurrentChatId(chatId);
-        let messages = await request('get', `api/chatRoom/get-messages?chatId=${chatId}`);
+        let messages = await request('get', `api/chatRoom/get-messages?chatId=${chatId}&offset=${offset}&messageLimit=${messageLimit}`);
         setChat(messages.data);
-        //notification
-        //setNotification(current => current.filter(x => x.id === chatId));
-        //notification
     }
 
     return (
@@ -75,8 +135,9 @@ export function Chat({
                             <img className={styles['online-fr-img']} src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" />
                             <div>
                                 <h5>{x.chatFriendName}</h5>
-                                <p>(No) new messages</p>
+                                {x.notification ? <p className={styles['last-message']}>New messages</p> : <p className={styles['last-message']}>No new messages</p>}
                             </div>
+                            {x.notification ? <p className={styles['notification']}></p> : null}
                         </li>
                     ))}
                 </ul>
@@ -96,7 +157,7 @@ export function Chat({
                         </form>
                         <div className={styles['chat-messages']}>
                             <div className={styles['chat-button']}>
-                                <button className='btn btn-outline-light'>Show more</button>
+                                {!end ? <button className='btn btn-outline-light' onClick={() => setOffset(x => x + messageLimit)}>Show more</button> : null}
                             </div>
                             <ul>
                                 {chat.map(x => (

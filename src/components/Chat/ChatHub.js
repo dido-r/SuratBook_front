@@ -7,7 +7,8 @@ export function ChatHub() {
 
     const [connection, setConnection] = useState(null);
     const [chat, setChat] = useState([]);
-    //const [notification, setNotification] = useState([]);
+    const [chatRooms, setChatRooms] = useState([]);
+    const [notification, setNotification] = useState(null);
 
     useEffect(() => {
         const newConnection = new HubConnectionBuilder()
@@ -16,6 +17,7 @@ export function ChatHub() {
             .build();
 
         setConnection(newConnection);
+        request('get', 'api/chatRoom/get').then(x => setChatRooms(x.data));
     }, []);
 
     useEffect(() => {
@@ -25,31 +27,35 @@ export function ChatHub() {
                 .then(result => {
                     console.log('Connected!');
 
+                    request('post', 'api/chatRoom/create-connection',
+                        {
+                            connectionId: connection.connection.connectionId
+                        });
+
                     connection.on('ReceiveMessage', message => {
                         setChat(current => [...current, message]);
                     });
-
-                    // connection.on('ReceiveNotification', chatId => {
-                    //     setNotification(current => [...current, chatId]);
-                    // });
+                    
+                    connection.on('ReceiveNotification', currentChatId => {
+                        setNotification(currentChatId);
+                    });
                 })
                 .catch(e => console.log('Connection failed: ', e));
         }
     }, [connection]);
 
     const sendMessage = async (user, message, currentChatId, connections) => {
-
+        
         const chatMessage = {
             userId: user,
             message: message
         };
-
+        
         if (connection._connectionStarted) {
             try {
                 await connection.send('SendMessage', chatMessage, connections);
-                //notification
-                //await connection.send('SendNotification', currentChatId, connections.find(x => x !== connection));
-                //notification
+                await connection.send('SendNotification', currentChatId, connections.find(x => x !== connection.connection.connectionId));
+
                 await request('post', 'api/chatRoom/create-message', {
                     message: chatMessage.message,
                     ownerId: user,
@@ -72,8 +78,9 @@ export function ChatHub() {
             sendMessage={sendMessage}
             connection={connection}
             setChat={setChat}
-            // notification={notification}
-            // setNotification={setNotification}
+            chatRooms={chatRooms}
+            setChatRooms={setChatRooms}
+            notification={notification}
         />
     );
 };
