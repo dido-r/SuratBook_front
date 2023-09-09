@@ -13,10 +13,10 @@ export function Chat({
     setChatRooms,
     notification
 }) {
-    
+
     const bottom = useRef(null);
     const { values, onChangeHandler, resetValues } = useForm({
-        
+
         message: ''
     });
     const [currentChatId, setCurrentChatId] = useState(null);
@@ -24,40 +24,43 @@ export function Chat({
     const [offset, setOffset] = useState(0);
     const messageLimit = 50;
     const [end, setEnd] = useState(false);
+    const [users, setUsers] = useState([]);
+    const [search, setSearch] = useState(false);
+    const [searchResults, setSearchResults] = useState([]);
     const user = useCurrentUser();
-    
+
     useEffect(() => {
-        
-        if(offset === 0){
-            
+
+        if (offset === 0) {
+
             bottom.current?.scrollIntoView();
         }
-        
+
     }, [chat, offset]);
-    
+
     useEffect(() => {
-        
+
         const newList = chatRooms.map((x) => {
-            
+
             if (x.id === notification && currentChatId !== x.id) {
-                
+
                 request('post', `api/chatRoom/set-notification?chatId=${x.id}&param=on`);
 
                 const updatedItem = {
                     ...x,
                     notification: true,
                 };
-                
+
                 return updatedItem;
             }
-            
+
             return x;
         });
-        
+
         setChatRooms(newList);
-        
+
     }, [notification]);
-    
+
     useEffect(() => {
 
         if (offset !== 0) {
@@ -76,6 +79,12 @@ export function Chat({
 
     }, [offset]);
 
+    useEffect(() => {
+
+        request('get', 'api/user/all-users').then(x => setUsers(x.data));
+
+    }, []);
+
     const onMessageSend = (e) => {
 
         e.preventDefault();
@@ -83,10 +92,22 @@ export function Chat({
         resetValues(e);
     }
 
-    // const startChat = async (receiverId) => {
+    const startChat = async (receiverId) => {
 
-    //     await request('post', `api/chatRoom/create?receiverId=${receiverId}`)
-    // }
+        let isExist = await request('get', `api/chatRoom/exist?receiverId=${receiverId}`);
+
+        if (isExist.data === "do not exist") {
+
+            let result = await request('post', `api/chatRoom/create?receiverId=${receiverId}`);
+            setChatRooms(chatRooms.push(result.data));
+            onChatSelect(result.data.id);
+        } else {
+
+            onChatSelect(isExist.data.toUpperCase());
+        }
+
+        setSearch(false);
+    }
 
     const notificationClear = (id) => {
 
@@ -121,16 +142,20 @@ export function Chat({
         setChat(messages.data);
     }
 
+    const showSuggestions = async (e) => {
+
+        setSearchResults(users.filter(z => z.name.toLowerCase().includes(e.target.value.toLowerCase())));
+        setSearch(true);
+    }
+
     return (
         <div className={styles['chat-container']}>
 
             <div className={styles['chat-history']}>
                 <h5 className={styles['chat-history-header']}>Chat history</h5>
-                <form>
-                    <input className={styles['chat-filter-input']} required='required' type="text" name="message" placeholder="Search for chat..." />
-                </form>
+                <input className={styles['chat-filter-input']} required='required' type="text" name="search" value={values.search} placeholder="Search for chat..." onChange={(e) => showSuggestions(e)} />
                 <ul>
-                    {chatRooms.map(x => (
+                    {!search ? chatRooms.map(x => (
                         <li key={x.id} className={`${currentChatId === x.id ? styles['chat-selected'] : null} d-flex`} onClick={() => onChatSelect(x.id)}>
                             <img className={styles['online-fr-img']} src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" />
                             <div>
@@ -139,7 +164,13 @@ export function Chat({
                             </div>
                             {x.notification ? <p className={styles['notification']}></p> : null}
                         </li>
-                    ))}
+                    ))
+                        :
+                        searchResults.map(x => (
+                            <li key={x.id} onClick={() => startChat(x.id)}>
+                                <p>{x.name}</p>
+                            </li>
+                        ))}
                 </ul>
             </div>
             <hr />
