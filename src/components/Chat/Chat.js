@@ -40,24 +40,50 @@ export function Chat({
 
     useEffect(() => {
 
-        const newList = chatRooms.map((x) => {
+        if (notification !== null) {
 
-            if (x.id === notification && currentChatId !== x.id) {
+            console.log(notification);
 
-                request('post', `api/chatRoom/set-notification?chatId=${x.id}&param=on`);
+            let exist = chatRooms.some(x => {
 
-                const updatedItem = {
-                    ...x,
-                    notification: true,
-                };
+                console.log(x.id);
 
-                return updatedItem;
+                if (x.id.toLowerCase() === notification.toLowerCase()) {
+
+                    return true;
+                }
+
+                return false;
+            });
+
+            if (!exist) {
+
+                request('post', `api/chatRoom/add?chatId=${notification}`).then(x =>
+
+                    setChatRooms(current => [...current, x.data]));
+
+            } else {
+
+                const newList = chatRooms.map((x) => {
+
+                    if (x.id === notification && currentChatId !== x.id) {
+
+                        request('post', `api/chatRoom/set-notification?chatId=${x.id}&param=on`);
+
+                        const updatedItem = {
+                            ...x,
+                            notification: true,
+                        };
+
+                        return updatedItem;
+                    }
+
+                    return x;
+                });
+
+                setChatRooms(newList);
             }
-
-            return x;
-        });
-
-        setChatRooms(newList);
+        }
 
     }, [notification]);
 
