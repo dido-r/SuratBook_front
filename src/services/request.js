@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Cookies } from "react-cookie";
 
-const host = 'https://localhost:7062/';
+const host = 'http://localhost:5000/';
 
 export async function request(method, path, obj, mimeType) {
 

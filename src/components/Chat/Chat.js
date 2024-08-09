@@ -1,6 +1,5 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import styles from './Chat.module.css';
-import { useEffect } from 'react';
 import { useForm } from '../../hooks/useForm';
 import { useCurrentUser } from '../../hooks/useCookies';
 import { request } from '../../services/request';
@@ -11,7 +10,10 @@ export function Chat({
     sendMessage,
     chatRooms,
     setChatRooms,
-    notification
+    notification,
+    currentChatId,
+    setCurrentChatId,
+    setNotification
 }) {
 
     const bottom = useRef(null);
@@ -19,7 +21,6 @@ export function Chat({
 
         message: ''
     });
-    const [currentChatId, setCurrentChatId] = useState(null);
     const [connections, setConnections] = useState([]);
     const [offset, setOffset] = useState(0);
     const messageLimit = 50;
@@ -42,11 +43,7 @@ export function Chat({
 
         if (notification !== null) {
 
-            console.log(notification);
-
             let exist = chatRooms.some(x => {
-
-                console.log(x.id);
 
                 if (x.id.toLowerCase() === notification.toLowerCase()) {
 
@@ -65,8 +62,8 @@ export function Chat({
             } else {
 
                 const newList = chatRooms.map((x) => {
-
-                    if (x.id === notification && currentChatId !== x.id) {
+                    
+                    if (x.id.toLowerCase() === notification.toLowerCase() && currentChatId !== x.id) {
 
                         request('post', `api/chatRoom/set-notification?chatId=${x.id}&param=on`);
 
@@ -85,6 +82,8 @@ export function Chat({
             }
         }
 
+        setNotification(null)
+
     }, [notification]);
 
     useEffect(() => {
@@ -99,7 +98,7 @@ export function Chat({
                         setEnd(true)
                     }
 
-                    setChat(current => [...x.data, ...current]);
+                    setChat(current => [ ...x.data, ...current]);
                 });
         }
 
@@ -111,10 +110,11 @@ export function Chat({
 
     }, []);
 
-    const onMessageSend = (e) => {
+    const onMessageSend = async (e) => {
 
         e.preventDefault();
-        sendMessage(user.userId, values.message, currentChatId, connections);
+        let result = await request('get', `api/chatRoom/get-connection?chatId=${currentChatId}`);
+        sendMessage(user.userId, values.message, currentChatId, result.data);
         resetValues(e);
     }
 
@@ -162,6 +162,7 @@ export function Chat({
         setOffset(0);
         notificationClear(chatId);
         setCurrentChatId(chatId);
+        localStorage.setItem("chatRoomId", chatId)
         let result = await request('get', `api/chatRoom/get-connection?chatId=${chatId}`);
         setConnections(result.data);
         let messages = await request('get', `api/chatRoom/get-messages?chatId=${chatId}&offset=${offset}&messageLimit=${messageLimit}`);

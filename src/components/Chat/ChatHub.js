@@ -9,10 +9,12 @@ export function ChatHub() {
     const [chat, setChat] = useState([]);
     const [chatRooms, setChatRooms] = useState([]);
     const [notification, setNotification] = useState(null);
+    const [currentChatId, setCurrentChatId] = useState(null);
+
 
     useEffect(() => {
         const newConnection = new HubConnectionBuilder()
-            .withUrl('https://localhost:7062/chat')
+            .withUrl('http://localhost:5000/chat')
             .withAutomaticReconnect()
             .build();
 
@@ -33,10 +35,15 @@ export function ChatHub() {
                         });
 
                     connection.on('ReceiveMessage', message => {
-                        setChat(current => [...current, message]);
+
+                        if (localStorage.getItem("chatRoomId") === message.chatRoomId) {
+
+                            setChat(current => [...current, message]);
+                        }
                     });
-                    
+
                     connection.on('ReceiveNotification', currentChatId => {
+
                         setNotification(currentChatId);
                     });
                 })
@@ -45,12 +52,13 @@ export function ChatHub() {
     }, [connection]);
 
     const sendMessage = async (user, message, currentChatId, connections) => {
-        
+
         const chatMessage = {
             userId: user,
-            message: message
+            message: message,
+            chatRoomId: currentChatId
         };
-        
+
         if (connection._connectionStarted) {
             try {
                 await connection.send('SendMessage', chatMessage, connections);
@@ -81,6 +89,9 @@ export function ChatHub() {
             chatRooms={chatRooms}
             setChatRooms={setChatRooms}
             notification={notification}
+            currentChatId={currentChatId}
+            setCurrentChatId={setCurrentChatId}
+            setNotification={setNotification}
         />
     );
 };

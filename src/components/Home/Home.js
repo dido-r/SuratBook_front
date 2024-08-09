@@ -31,13 +31,12 @@ export function Home() {
         });
     }, [offset]);
 
-    //HUB
     const [connection, setConnection] = useState(null);
     const [onlineUsers, setOnlineUsers] = useState([]);
 
     useEffect(() => {
         const newConnection = new HubConnectionBuilder()
-            .withUrl('https://localhost:7062/online-users')
+            .withUrl('http://localhost:5000/online-users')
             .withAutomaticReconnect()
             .build();
 
@@ -48,13 +47,12 @@ export function Home() {
     useEffect(() => {
 
         if (connection) {
-
             connection.start()
                 .then(result => {
                     console.log('Connected!');
 
                     connection.on('Online', user => {
-
+                        
                         setOnlineUsers(current => [...current, user]);
                     });
 
@@ -72,7 +70,7 @@ export function Home() {
 
         var isOnline = await request('get', 'api/user/is-online');
 
-        if (!isOnline) {
+        if (!isOnline.data) {
 
             const user = {
                 id: currentUser.userId,
@@ -80,6 +78,7 @@ export function Home() {
             }
 
             try {
+                await request('post', 'api/user/set-online')
                 await connection.send('SetOnline', user, connection.connection.connectionId);
             }
             catch (e) {
@@ -88,7 +87,7 @@ export function Home() {
         }
     }
 
-    // const serOffline = async () => {
+    // const setOffline = async () => {
 
     //     try {
     //         await connection.send('SetOffline', currentUser.userId);
@@ -97,7 +96,6 @@ export function Home() {
     //         console.log(e);
     //     }
     // }
-    //HUB
 
     return (
 

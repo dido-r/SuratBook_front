@@ -36,7 +36,7 @@ export function Register() {
         let result = await request('post', 'api/user/register', values);
 
         if (result.name === "AxiosError") {
-
+            console.log(result)
             setError(`${result.response.data.message}`);
             setLoading(false);
             
