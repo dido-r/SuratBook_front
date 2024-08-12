@@ -5,10 +5,9 @@ import { FriendsOnline } from './FriendsOnline/FriendsOnline';
 import { useEffect, useState } from 'react';
 import { request } from '../../services/request';
 import { Spinner } from '../Spinner/Spinner';
-
-import { HubConnectionBuilder } from '@microsoft/signalr';
 import { useCurrentUser } from '../../hooks/useCookies';
-import { Sidebar } from '../Sidebar/Sidebar';
+import { useSelector, useDispatch } from 'react-redux';
+import { add, remove, fetchOnlineUsers } from '../../store/onlineUsers'
 
 export function Home() {
 
@@ -18,6 +17,9 @@ export function Home() {
     const [end, setEnd] = useState(false);
     const [loading, setLoading] = useState(true);
     const currentUser = useCurrentUser();
+    const connection = useSelector(state => state.connection.connection);
+    const onlineUsers = useSelector(state => state.onlineUsers.list);
+    const dispatch = useDispatch()
 
     useEffect(() => {
 
@@ -32,20 +34,8 @@ export function Home() {
         });
     }, [offset]);
 
-    const [connection, setConnection] = useState(null);
-    const [onlineUsers, setOnlineUsers] = useState([]);
-
     useEffect(() => {
-        const newConnection = new HubConnectionBuilder()
-            .withUrl('http://localhost:5000/online-users')
-            .withAutomaticReconnect()
-            .build();
-
-        setConnection(newConnection);
-        request('get', 'api/user/get-online-users').then(x => setOnlineUsers(x.data));
-    }, []);
-
-    useEffect(() => {
+        dispatch(fetchOnlineUsers());
 
         if (connection) {
             connection.start()
@@ -53,12 +43,11 @@ export function Home() {
                     console.log('Connected!');
 
                     connection.on('Online', user => {
-                        
-                        setOnlineUsers(current => [...current, user]);
+                        dispatch(add(user))
                     });
 
                     connection.on('Offline', userId => {
-                        setOnlineUsers(onlineUsers.filter(x => x.id === userId));
+                        dispatch(remove(userId))
                     });
 
                     setOnline();
@@ -87,16 +76,6 @@ export function Home() {
             }
         }
     }
-
-    // const setOffline = async () => {
-
-    //     try {
-    //         await connection.send('SetOffline', currentUser.userId);
-    //     }
-    //     catch (e) {
-    //         console.log(e);
-    //     }
-    // }
 
     return (
         <div>

@@ -14,7 +14,7 @@ export function FriendsOnline({
             <hr />
             <ul className="nav flex-column">
                 {onlineUsers.map(x => (
-                    <li className="nav-item">
+                    <li key={x.id} className="nav-item">
                         <Link to={`/user/${x.id}`} className={`${styles['nav-link']} text-white`}><img className={styles['online-fr-img']} src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" />{x.name}</Link>
                     </li>))}
             </ul>

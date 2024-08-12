@@ -5,6 +5,7 @@ import { useCurrentUser } from '../../hooks/useCookies';
 import { useForm } from '../../hooks/useForm';
 import { request } from '../../services/request';
 import { useDropBox } from '../../hooks/useDropbox';
+import { useSelector } from 'react-redux'
 
 export function NavMenu() {
 
@@ -19,6 +20,8 @@ export function NavMenu() {
         searchTerm: '',
         place: 'users'
     });
+    const connection = useSelector(state => state.connection.connection);
+    const currentUser = useCurrentUser();
 
     useEffect(() => {
 
@@ -41,12 +44,24 @@ export function NavMenu() {
         }
     }, [user.userId]);
 
+    const setOffline = async () => {
+
+        try {
+            connection.send('SetOffline', currentUser.userId);
+            setTimeout(400)
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
 
     const signOut = async () => {
 
         await request('post', 'api/user/logout');
         setDropdown(!dropdown);
+        setOffline();
         navigate("/login");
+        connection.stop();
     }
 
     const onSearchSubmit = async (e) => {
