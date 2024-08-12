@@ -1,4 +1,10 @@
-﻿.home-card {
+﻿.flex-container{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.home-card {
     margin-top: 20px;
     display: block;
     margin-left: auto;
@@ -8,7 +14,8 @@
 
 .card-container {
     margin-top: 100px;
-    flex: 0 0 77rem;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .onl-fr-sc{

@@ -100,18 +100,24 @@
     margin-left: 25px;
 }
 
+.chatter{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
 .chat-input {
-    position: absolute;
     bottom: 18px;
     padding: 7px;
     border-radius: 5px;
     background: #efeeee;
-    width: 64%;
+    width: 100%;
 }
 
 .chat-messages {
     overflow-y: auto;
-    height: 570px;
+    flex-basis: 80vh;
+    margin-bottom: 20px;
 }
 
 .chat-button {

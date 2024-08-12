@@ -8,6 +8,7 @@ import { Spinner } from '../Spinner/Spinner';
 
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import { useCurrentUser } from '../../hooks/useCookies';
+import { Sidebar } from '../Sidebar/Sidebar';
 
 export function Home() {
 
@@ -98,18 +99,19 @@ export function Home() {
     // }
 
     return (
-
-        <div className="d-flex" onScroll={() => console.log('scroll')}>
-            <div className={styles['card-container']}>
-                <CreatePost location={'home'} posts={posts} setPosts={setPosts} />
-                {loading ? <Spinner /> :
-                    <>
-                        <Post posts={posts} setPosts={setPosts} />
-                        {!end ? <button onClick={() => setOffset(x => x + limit)} className={`${styles['load-more']} btn btn-outline-light`}>Load more</button> : null}
-                    </>}
-            </div>
-            <div className={styles['onl-fr-sc']}>
-                <FriendsOnline onlineUsers={onlineUsers} />
+        <div>
+            <div className={styles['flex-container']} onScroll={() => console.log('scroll')}>
+                <div className={styles['card-container']}>
+                    <CreatePost location={'home'} posts={posts} setPosts={setPosts} />
+                    {loading ? <Spinner /> :
+                        <>
+                            <Post posts={posts} setPosts={setPosts} />
+                            {!end ? <button onClick={() => setOffset(x => x + limit)} className={`${styles['load-more']} btn btn-outline-light`}>Load more</button> : null}
+                        </>}
+                </div>
+                <div className={styles['onl-fr-sc']}>
+                    <FriendsOnline onlineUsers={onlineUsers} />
+                </div>
             </div>
         </div>
     );

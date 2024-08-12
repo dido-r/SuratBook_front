@@ -209,10 +209,7 @@ export function Chat({
                         <h4>Welcome to SuratChat!</h4>
                     </div>
                     :
-                    <>
-                        <form className={styles['chat-form']} onSubmit={(e) => onMessageSend(e)}>
-                            <input className={styles['chat-input']} required='required' type="text" name="message" placeholder="Search friend..." value={values.message} onChange={(e) => onChangeHandler(e)} />
-                        </form>
+                    <div className={styles['chatter']}>
                         <div className={styles['chat-messages']}>
                             <div className={styles['chat-button']}>
                                 {!end ? <button className='btn btn-outline-light' onClick={() => setOffset(x => x + messageLimit)}>Show more</button> : null}
@@ -224,7 +221,10 @@ export function Chat({
                             </ul>
                             <div ref={bottom} />
                         </div>
-                    </>}
+                       <form className={styles['chat-form']} onSubmit={(e) => onMessageSend(e)}>
+                            <input className={styles['chat-input']} required='required' type="text" name="message" placeholder="Type a message..." value={values.message} onChange={(e) => onChangeHandler(e)} />
+                        </form>
+                    </div>}
             </div>
         </div>
     );
