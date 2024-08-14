@@ -6,5 +6,9 @@ export default configureStore({
   reducer: {
     connection: connectionHub,
     onlineUsers: onlineUsers
-  }
+  },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 })

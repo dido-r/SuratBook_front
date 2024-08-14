@@ -43,11 +43,13 @@ export function Home() {
                     console.log('Connected!');
 
                     connection.on('Online', user => {
-                        dispatch(add(user))
+
+                        dispatch(add(user));
                     });
 
                     connection.on('Offline', userId => {
-                        dispatch(remove(userId))
+                        
+                        dispatch(remove(userId));
                     });
 
                     setOnline();

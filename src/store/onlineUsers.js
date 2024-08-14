@@ -16,9 +16,9 @@ const onlineUsers = createSlice({
     },
     reducers: {
         add: (state, action) => {
+            
+            if (!state.list.some(x => x.id.toLowerCase() === action.payload.id.toLowerCase())){
 
-            if(!state.list.includes(action.payload)){
-                
                 state.list.push(action.payload);
             }
         },
